@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data table</title>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+</head>
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+<body>
+    <script>
+        var options = {
+  chart: {
+    title: 'Bar Chart Example',
+    subtitle: 'With Custom Colors',
+  },
+  bars: 'horizontal',
+  series: {
+    0: {
+      targetAxisIndex: 0
+    },
+    1: {
+      targetAxisIndex: 1
+    }
+  },
+  vAxes: {
+    0: {
+      title: 'A'
+    },
+    1: {
+      title: 'B'
+    }
+  },
+  colors: ['#a52714', '#097138']
+};
+
+
+<?php
+            //แสดงผลข้อมูลในฐานข้อมูล
+            while ($row = mysqli_fetch_assoc($result)) {  ?>
+                <div class="card col-sm-4 col-md-auto   shadow p-3 mb-5 mt-5 bg-body-tertiary rounded w-2">
+                    <div class="card-body ">
+                        <h2 class="card-title"><?php echo $row['project_name']; ?></h2>
+                        <h5>ผู้ดูแลโปรเจค</h5>
+                        <p><span><?php echo $row['owner_fname']; ?></span> <span><?php echo $row['owner_lname']; ?></span></p>
+                         
+                        <!-- //แปลงจากyyy/mm/dd => dd/mm/yyyy -->
+                        <p>วันที่โปรเจคต้องเสร็จ : <?php echo date("d-m-Y ", strtotime($row['dead_line'])) ?></p>
+                        
+                        <div class="progress h-1 m-2">
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 90%;">90%</div>
+                        </div>
+                        <!-- ส่งค่าด้วยวิธีQueryString -->
+                        <a href="mainpage.php?idp=<?php echo $row['project_id'] ?>" class="btn btn-primary">ดูรายละเอียดโปรเจค</a>
+                        <a href="deleteProject.php?iddel=<?php echo $row['project_id'] ?>&idtask=<?php echo $task['task_id'] ?>" class="btn btn-danger" onclick="return confirm('ต้องการลบโปรเจคนี้หรือไม่??')">ลบโปรเจค<i class="bi bi-trash"></i></a>
+                    </div>
+                </div>
+            <?php } ?>
+
+
+
+
+
+    </script>
+</body>
+</html>
