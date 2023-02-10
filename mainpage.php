@@ -13,15 +13,15 @@ $order = 1;
 // RIGHT JOIN  project_create ON project_create.project_id = task.project_id
 // WHERE project_create.project_id = $id";
 
-$sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,project_create.owner_fname,activity.activity_name,activity.activity_progress,project_create.detail
+$sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,project_create.owner_fname,activity.activity_name,activity.activity_progress,project_create.detail,activity.activity_id,task.project_id
 FROM task
 RIGHT JOIN  project_create ON project_create.project_id = task.project_id
 RIGHT JOIN  activity ON task.task_id = activity.task_id
 WHERE project_create.project_name ='$id'";
 
+
 $result_task = mysqli_query($con, $sql2);
 // $task_query = mysqli_fetch_assoc($result_task);
-
 ?>
 
 <!DOCTYPE html>
@@ -46,25 +46,56 @@ $result_task = mysqli_query($con, $sql2);
 <body>
     <script>
         $(document).ready(function() {
-            
-            var table =  $('#progress').DataTable({
-                                "columnDefs": [{
-                    "targets": [4,5],
-                    "render": function(data, type, row, meta) {
-                        return '<div class="progress">' +
-                            '<div class="progress-bar bg-success" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                            '</div>' +
-                            '</div>';
+            $(".open_update").click(function() {
+
+                let idx = $(this).attr('idx');
+                let idp = "<?php echo $_GET['idp']; ?>";
+                $.post("modalupdate.php", {
+                        id: idx,
+                        idp: idp
+                    },
+                    function(result) {
+                        $("#modal_update").html(result);
                     }
-                   
-                }
-                // ColumnDefs คือคำสั่งที่เก็บการตกแต่งตารางในรูปแบบของ ArryObj
-                ,{ "targets": 1,
-                    "data": null,
-                    "defaultContent": "<a class='btn btn-info rounded-circle'><i class='bi bi-pencil-square'></i></a>"}
-                  
+                );
+                // modal หน้าmodal edit
+
+            });
+            $(".open_edit").click(function() {
+
+                let idx = $(this).attr('idx');
+
+                $.post("modaledit.php", {
+                        id: idx
+                    },
+                    function(result) {
+                        $("#modal_edit").html(result);
+                    }
+                );
+                // modal หน้าmodal edit
+
+            });
+
+            var table = $('#progress').DataTable({
+                "columnDefs": [{
+                        "targets": [4, 5],
+                        "render": function(data, type, row, meta) {
+                            return '<div class="progress">' +
+                                '<div class="progress-bar bg-success" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
+                                '</div>' +
+                                '</div>';
+                        }
+
+                    }
+                    // ColumnDefs คือคำสั่งที่เก็บการตกแต่งตารางในรูปแบบของ ArryObj
+                    , {
+                        "targets": 1,
+                        "data": null,
+                        "defaultContent": "<a class='btn btn-info rounded-circle'><i class='bi bi-pencil-square'></i></a>"
+                    }
+
                 ]
-                
+
             });
 
             $('#progress tbody').on('click', 'a', function() {
@@ -79,13 +110,13 @@ $result_task = mysqli_query($con, $sql2);
                     tr.addClass('shown');
                 }
             });
-            // //สร้างตารางย่อยที่ซ่อนไว้
+            //สร้างตารางย่อยที่ซ่อนไว้
             function format(d) {
                 // `d` is the original data object for the row
                 return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
                     '<tr>' +
                     '<td>ชื่องาน:</td>' +
-                    '<td>' + d[2] + '</td>'  +
+                    '<td>' + d[2] + '</td>' +
                     '</tr>' +
                     '<tr>' +
                     '<td>ชื่องาน:</td>' +
@@ -93,20 +124,20 @@ $result_task = mysqli_query($con, $sql2);
                     '</tr>' +
 
                     '<td>ความคืบหน้า:</td>' +
-                    '<td>' + d[4] +'%'+ '</td>' 
-                    +
-                    '<td>' + '<a href="mainpage.php?idp='+d[3]
-                    + ' "class="btn btn-success bg-subtle"><i class="bi bi-arrow-repeat"></i> อัพเดทความคืบหน้า</a>' 
-                    + '</td>'
-                    
+                    '<td>' + d[4] + '%' + '</td>' +
+                    '<td>' + '<a href="' + 'idx=' + d[3] +
+                    ' "class="btn btn-success bg-subtle ><i class="bi bi-arrow-repeat"></i> อัพเดทความคืบหน้า</a>' +
+                    '</td>'
 
-                    '</table>';
-            }
 
-   
+                '</table>';
+            };
+
+            // modal หน้าactivityNew
+
         });
-      
     </script>
+
     <div class="container-fluid">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
             <!-- Content -->
@@ -120,7 +151,7 @@ $result_task = mysqli_query($con, $sql2);
                 <div class="collapse navbar-collapse" id="Nav_bar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">Create Projecte</a>
+                            <a href="index.php" class="nav-link">Create Project</a>
                         </li>
                         <li class="nav-item">
                             <a href="task.php" class="nav-link">Task</a>
@@ -128,9 +159,7 @@ $result_task = mysqli_query($con, $sql2);
                         <li class="nav-item">
                             <a href="display.php" class="nav-link">Display</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Report</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -156,6 +185,8 @@ $result_task = mysqli_query($con, $sql2);
                 </div>
 
 
+
+
                 <div class="input-group mt-3 row">
                     <div class="input-group-prepend col-auto">
                         <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
@@ -175,12 +206,18 @@ $result_task = mysqli_query($con, $sql2);
                 </div>
 
                 <div class="form-floating mt-3">
-            <textarea class="form-control" placeholder="รายละเอียดงานโปรเจค" id="floatingTextarea" name="detail"><?php echo $row['detail'] ?></textarea>
-            <label for="floatingTextarea">รายละเอียดงานโปรเจค</label>
-        </div>
+                    <textarea class="form-control" placeholder="รายละเอียดงานโปรเจค" id="floatingTextarea" name="detail" readonly><?php echo $row['detail'] ?></textarea>
+                    <label for="floatingTextarea">รายละเอียดงานโปรเจค</label>
+                </div>
             </form>
-            <div class="d-flex justify-content-end ">
-                <button class="btn btn-warning mt-3" data-bs-target="#edit_page" data-bs-toggle="modal">แก้ไขรายละเอียดทั้งหมด</button>
+            <div class="d-flex justify-content-end mb-3 ">
+                <button class="btn btn-warning mt-3 open_edit" data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $row['project_id'] ?>">แก้ไขรายละเอียดทั้งหมด</button>
+
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="deleteProject.php?iddel=<?php echo $row['project_id'] ?>" class="btn btn-danger" onclick="return confirm('ต้องการลบโปรเจคนี้จริงหรือไม่')">ลบโปรเจค<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                    </svg></a>
 
             </div>
 
@@ -196,6 +233,7 @@ $result_task = mysqli_query($con, $sql2);
                             <th>กิจกรรมย่อย</th>
                             <th>ความคืบหน้ากิจกรรมย่อย</th>
                             <th>ความคืบหน้าทั้งหมด</th>
+                            <th>อัปเดตความคืบหน้า</th>
                         </thead>
                         <tbody>
                             <?php while ($task = mysqli_fetch_assoc($result_task)) { ?>
@@ -206,10 +244,12 @@ $result_task = mysqli_query($con, $sql2);
                                     <td><?php echo $task['activity_name']; ?></td>
                                     <td><?php echo $task['activity_progress'] ?></td>
                                     <td><?php echo $task['activity_progress'] ?></td>
-                                   
-                                    
 
 
+                                    <td><button type="button" class="btn btn-success open_update" data-bs-toggle="modal" idx="<?php echo $task['activity_id'] ?>" data-bs-target="#add_update">
+                                            อัปเดตความคืบหน้า
+                                            <!-- < ?php echo $task['task_id'] ?> -->
+                                        </button></td>
 
                                 </tr>
                             <?php } ?>
@@ -224,58 +264,46 @@ $result_task = mysqli_query($con, $sql2);
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title ">แก้ไขรายละเอียทั้งหมด</h1>
-
+                            <h1 class="modal-title ">แก้ไขรายละเอียดทั้งหมด</h1>
                             <!-- ปุ่มปิดกากบาท -->
                             <button class="btn btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
-                                <form action="updateProject.php" method="post">
-                                    <input type="hidden" name="idedit" value="<?php echo $row['project_id']; ?>">
-                                    <h1 class="text-center">รายละเอียดโปรเจค <?php echo $row['project_name'] ?></h1>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">ชื่อโปรเจค</span>
-                                        </div>
-                                        <input type="text" name="project_Name" class="form-control" placeholder="ป้อนชื่อโปรเจค" value="<?php echo $row['project_name'] ?>">
-                                    </div>
-                                    <div class="input-group mt-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">ชื่อเจ้าของโปรเจค</span>
-                                        </div>
-                                        <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" value="<?php echo $row['owner_fname'] ?>">
-                                        <input type="text" name="project_Owner_lname" class="form-control" placeholder="ป้อนนามสกุล" value="<?php echo $row['owner_lname'] ?>">
-                                    </div>
-
-
-                                    <div class="input-group mt-3 row-12">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
-                                        </div>
-                                        <input type="date" name="dead_line" id="" class="form-control col-lg-4" value="<?php echo $row['dead_line'] ?>" min="<?php echo date('Y-m-d'); ?>">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text ">วันที่สร้างโปรเจค</span>
-                                        </div>
-                                        <input type="timestam" name="c-time" id="" class="form-control col-lg-4" readonly value="<?php echo date("d-m-Y ", strtotime($row['create_time'])) ?>">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text ">วันที่อัพเดทโปรเจค</span>
-                                        </div>
-                                        <input type="date" name="update_time" id="" class="form-control col-lg-4" value="<?php echo $row['update_time'] ?>" min="<?php echo date('Y-m-d'); ?>">
-                                    </div>
-
-
-                            </div>
-
-
-                            <div class="modal-footer">
-                                <button class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
-                                <button class="btn btn-success">บันทึกข้อมูล</button>
-                            </div>
-                            </form>
+                            <div id="modal_edit"></div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+
+            <!-- modal update -->
+            <div class="modal fade  modal-lg" id="add_update">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">อัพเดทความคืบหน้าของกิจกรรมย่อย</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="modal_update"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <?php
+    echo $row['project_id'];
+    // $arr = ['1', '2', '3'];
+
+    // $new = implode(",", $arr);
+
+    // echo $new;
+    ?>
 </body>
 
 </html>

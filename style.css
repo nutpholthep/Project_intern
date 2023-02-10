@@ -4,3 +4,15 @@
     font-family: 'Noto Sans Thai', sans-serif;
     font-size: 1.25rem ;
 }
+.is-invalid {
+    border-color: #dc3545;
+  }
+  .is-valid{
+    border-color: #1F8A70;
+  }
+
+  .nav-link :hover{
+    color:red !important;
+}
+
+

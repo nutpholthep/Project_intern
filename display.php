@@ -4,10 +4,10 @@ require('dbconnect.php');
 // $sql = "SELECT * FROM project_create";
 // $result = mysqli_query($con, $sql);
 
-$sql2 = " SELECT project_create.project_name,task.task_name,task.task_id,project_create.create_time,project_create.dead_line,activity.activity_name,project_create.detail
+$sql2 = " SELECT project_create.project_name,task.task_name,task.task_id,project_create.create_time,project_create.dead_line,project_create.detail,employees.emp_fname,employees.emp_lname,project_create.create_by
 FROM task
 right JOIN  project_create ON project_create.project_id = task.project_id
-left JOIN  activity ON activity.task_id = task.task_id 
+left JOIN  employees ON employees.emp_id = project_create.create_by
 GROUP BY project_create.project_id";
 $result_task = mysqli_query($con, $sql2);
 // $task = mysqli_fetch_assoc($result_task);
@@ -120,7 +120,7 @@ $order = 1;
                 <div class="collapse navbar-collapse" id="Nav_bar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">Create Projecte</a>
+                            <a href="index.php" class="nav-link">Create Project</a>
                         </li>
                         <li class="nav-item">
                             <a href="task.php" class="nav-link">Task</a>
@@ -128,9 +128,7 @@ $order = 1;
                         <li class="nav-item">
                             <a href="display.php" class="nav-link">Display</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Report</a>
-                        </li>
+                     
                     </ul>
                 </div>
             </div>
@@ -152,7 +150,7 @@ $order = 1;
                     </tr>
                     <tr class="table table-warning">
                         <th class="text-center">ชื่อโปรเจค</th>
-                        <th class="text-center">ชื่องาน</th>
+                        <th class="text-center">เจ้าของโปรเจค</th>
                         <th class="text-center">คำอธิบายโปรเจค</th>
 
 
@@ -167,7 +165,7 @@ $order = 1;
                             <td><?php echo $order++ ?></td>
                             <td></td>
                             <td><?php echo $task['project_name'] ?></td>
-                            <td><?php echo $task['task_name'] ?></td>
+                            <td><?php echo $task['emp_fname']." ".$task['emp_lname'] ?></td>
 
                             <td><?php echo $task['detail'] ?></td>
 

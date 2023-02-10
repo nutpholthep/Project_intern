@@ -7,7 +7,8 @@ $actN = 1;
 $sql = "SELECT * FROM project_create";
 $sql2 = " SELECT project_create.project_name,task.task_name,task.task_id
 FROM task
-RIGHT JOIN  project_create ON project_create.project_id = task.project_id ;";
+RIGHT JOIN  project_create ON project_create.project_id = task.project_id 
+ORDER BY project_create.project_id";
 
 
 $task_query = mysqli_query($con, $sql2);
@@ -31,6 +32,8 @@ $result = mysqli_query($con, $sql);
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
 
+
+
     <script>
         $(document).ready(function() {
             // modal หน้าactivityNew
@@ -48,8 +51,9 @@ $result = mysqli_query($con, $sql);
                 // modal หน้าactivityNew end
 
             });
-            
+
             $('#taskTable').DataTable();
+
 
 
         });
@@ -70,7 +74,7 @@ $result = mysqli_query($con, $sql);
                 <div class="collapse navbar-collapse" id="Nav_bar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">Create Projecte</a>
+                            <a href="index.php" class="nav-link">Create Project</a>
                         </li>
                         <li class="nav-item">
                             <a href="task.php" class="nav-link">Task</a>
@@ -78,17 +82,15 @@ $result = mysqli_query($con, $sql);
                         <li class="nav-item">
                             <a href="display.php" class="nav-link">Display</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Report</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
 
         <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
-            <div class=" border-top mt-3">
-                <h2 class="text-center">Add Task</h2>
+            <div class="  mt-3">
+                <h2 class="text-center">สร้างงาน</h2>
                 <form action="taskquery.php" method="post">
 
                     <select name="taskID" class="form-control" required>
@@ -105,8 +107,8 @@ $result = mysqli_query($con, $sql);
                                 Task
                             </span>
                         </div>
-                        <input type="text" name="addTask" class="form-control" placeholder="ป้อนTask">
-                        <button class="btn btn-success">เพิ่มtasK</button>
+                        <input type="text" name="addTask" class="form-control" placeholder="ป้อนชื่องาน" autocomplete="off">
+                        <button class="btn btn-success">เพิ่มงาน</button>
                     </div>
                     <table class="table table-striped mt-3 " id="taskTable">
                         <thead class="thead-dark">
@@ -124,26 +126,25 @@ $result = mysqli_query($con, $sql);
                                     <td><?php echo $task['task_name']; ?></td>
                                     <td>
 
-                                    <!--START ถ้ายังไม่เพิ่มTaskปุ่มเพิ่มActivity จะไม่สามารถเพิ่มข้อมูลได้ -->
+                                        <!--START ถ้ายังไม่เพิ่มTaskปุ่มเพิ่มActivity จะไม่สามารถเพิ่มข้อมูลได้ -->
                                         <?php
-                                        if($task['task_name']==''){ ?>
+                                        if ($task['task_name'] == '') { ?>
                                             <button href="" class="btn btn-info open_activity" disabled>
-                                            <i class="bi bi-plus-circle-fill"></i>
-                                            เพิ่มกิจกรรมย่อย
-                                        </button>
-                                 <?php   } else{ ?>
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                                เพิ่มกิจกรรมย่อย
+                                            </button>
+                                        <?php   } else { ?>
 
-                                    <a href="" class="btn btn-info open_activity" data-bs-target="#add_act" data-bs-toggle="modal" idx="<?php echo $task['task_id']; ?>">
-                                            <i class="bi bi-plus-circle-fill"></i>
-                                            เพิ่มกิจกรรมย่อย
-                                        </a>
-                              <?php   } ?>
-                                <!-- ถ้ายังไม่เพิ่มTaskปุ่มเพิ่มActivity จะไม่สามารถเพิ่มข้อมูลได้ END-->
-                            </td>
+                                            <a href="" class="btn btn-info open_activity" data-bs-target="#add_act" data-bs-toggle="modal" idx="<?php echo $task['task_id']; ?>">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                                เพิ่มกิจกรรมย่อย
+                                            </a>
+                                        <?php   } ?>
+                                        <!-- ถ้ายังไม่เพิ่มTaskปุ่มเพิ่มActivity จะไม่สามารถเพิ่มข้อมูลได้ END-->
+                                    </td>
 
                                     <td>
-                                        <a href="deletetask.php?idtask=<?php echo $task['task_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
-                                            <i class="bi bi-trash"></i>ลบงาน</a>
+                                        <a href="deletetask.php?idtask=<?php echo $task['task_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')"><i class="bi bi-trash"></i>ลบงาน</a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -169,6 +170,9 @@ $result = mysqli_query($con, $sql);
 
             </div>
         </div>
+
+    </div>
+
 </body>
 
 </html>

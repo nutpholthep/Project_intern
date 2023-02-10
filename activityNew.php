@@ -24,7 +24,7 @@ $actN =1;
                   <div class="input-group-prepend">
                       <span class="input-group-text">ชื่อกิจกรรมย่อย</span>
                     </div>
-                    <input type="text" name="act_name" class="form-control" placeholder="ป้อนชื่อโปรเจค" >
+                    <input type="text" name="act_name" class="form-control" placeholder="ป้อนชื่อกิจกรรมย่อย" >
                 </div>
                 
                 
@@ -37,18 +37,20 @@ $actN =1;
                     </thead>
                     <tbody >
                         <?php while($lact=mysqli_fetch_assoc($act_query)){ ?>
-                            <input type="hidden" name="task_act" value="<?php echo $lact['task_id']?>">
+                            <input type="text" name="task_act" value="<?php echo $lact['task_id']?>">
+                           
                             <tr>
                         <td><?php echo $actN++ ?></td>
                         <td><?php echo $lact['activity_name']?></td>
-                        <td><?php echo $lact['task_id']?></td>
+                        <td> <a href="deletetask.php?idtask=<?php echo $task['activity_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
+                                            <i class="bi bi-trash"></i>ลบงาน</a></td>
                        </tr> 
 
 <?php } ?>
+
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
         <button type="summit" class="btn btn-success">บันทึกข้อมูล</button>
       </div>
       </form>
