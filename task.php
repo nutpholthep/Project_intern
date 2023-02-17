@@ -5,9 +5,11 @@ require('dbconnect.php');
 $order = 1;
 $actN = 1;
 $sql = "SELECT * FROM project_create";
-$sql2 = " SELECT project_create.project_name,task.task_name,task.task_id
+$sql2 = " SELECT project_create.project_name,task.task_name,task.task_id,task.status
 FROM task
 RIGHT JOIN  project_create ON project_create.project_id = task.project_id 
+/* Checking if the value of `task.status` is not in the set of values `(0)`. */
+WHERE task.task_id IS null OR task.status NOT IN(0)
 ORDER BY project_create.project_id";
 
 
@@ -32,10 +34,22 @@ $result = mysqli_query($con, $sql);
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
 
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+
 
 
     <script>
         $(document).ready(function() {
+
+
             // modal หน้าactivityNew
             $(".open_activity").click(function() {
 
@@ -55,6 +69,11 @@ $result = mysqli_query($con, $sql);
             $('#taskTable').DataTable();
 
 
+            $('.taskselect').select2({
+                theme: 'bootstrap-5',
+                placeholder: "เลือกโปรเจคที่ต้องการ"
+
+            });
 
         });
     </script>
@@ -62,45 +81,26 @@ $result = mysqli_query($con, $sql);
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
-            <!-- Content -->
-            <div class="container-fluid">
-                <!-- Brand -->
-                <a href="index.php" class="navbar-brand">Project Tracking</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#Nav_bar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Menu -->
-                <div class="collapse navbar-collapse" id="Nav_bar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="index.php" class="nav-link">Create Project</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="task.php" class="nav-link">Task</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="display.php" class="nav-link">Display</a>
-                        </li>
+        <?php
+        include 'nav.php';
 
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        ?>
 
         <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
             <div class="  mt-3">
                 <h2 class="text-center">สร้างงาน</h2>
                 <form action="taskquery.php" method="post">
-
-                    <select name="taskID" class="form-control" required>
-                        <option value="">-เลือกหัวข้อโปรเจค-</option>
-                        <?php foreach ($result as $results) { ?>
-                            <option value="<?php echo $results["project_id"]; ?>">
-                                <?php echo $results["project_name"]; ?>
-                            </option>
-                        <?php } ?>
-                    </select>
+                    <div class="input-group mt-3 ">
+                        <label class="input-group-text">ชื่อโปรเจค</label>
+                        <select name="taskID" class="form-control taskselect " required>
+                            <option value="">-เลือกหัวข้อโปรเจค-</option>
+                            <?php foreach ($result as $results) { ?>
+                                <option value="<?php echo $results["project_id"]; ?>">
+                                    <?php echo $results["project_name"]; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
                     <div class="input-group mt-3 mb-2">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -172,6 +172,19 @@ $result = mysqli_query($con, $sql);
         </div>
 
     </div>
+    <script>
+        function ExcelReport() //function สำหรับสร้าง ไฟล์ excel จากตาราง
+        {
+            var sheet_name = "excel_sheet"; /* กำหหนดชื่อ sheet ให้กับ excel โดยต้องไม่เกิน 31 ตัวอักษร */
+            var elt = document.getElementById('myTable'); /*กำหนดสร้างไฟล์ excel จาก table element ที่มี id ชื่อว่า myTable*/
+
+            /*------สร้างไฟล์ excel------*/
+            var wb = XLSX.utils.table_to_book(elt, {
+                sheet: sheet_name
+            });
+            XLSX.writeFile(wb, 'report.xlsx'); //Download ไฟล์ excel จากตาราง html โดยใช้ชื่อว่า report.xlsx
+        }
+    </script>
 
 </body>
 

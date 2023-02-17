@@ -6,15 +6,19 @@ $fname =$_POST['project_Owner_fname']; //ชื่อเจ้าของโป
 $lname= $_POST['project_Owner_lname']; //นามสกุลเจ้าของโปรเจค
 $date = $_POST['dead_line']; //กำหนดเวลาของโปรเจค
 $updateTime = $_POST['update_time']; //กำหนดเวลาของโปรเจค
+$eTask = $_POST['edit_task']; //กำหนดเวลาของโปรเจค
+$eAct = $_POST['edit_act']; //กำหนดเวลาของโปรเจค
 // print_r($_POST);
 // exit;
 $sql = "UPDATE project_create
-SET project_name='$pname',owner_fname='$fname',owner_lname='$lname',dead_line='$date',update_time='$updateTime'
-WHERE project_id = $id";
+inner join employees
+SET project_create.project_name='$pname',employees.emp_fname='$fname',employees.emp_lname='$lname',project_create.dead_line='$date',project_create.update_time='$updateTime'
+WHERE project_create.project_id = $id ";
+
 
 $result = mysqli_query($con,$sql);
 if($result){
-    header('location:display.php');
+    header('location:mainpage.php?idp='.$_POST['idedit']);
     exit();
 
 }else{

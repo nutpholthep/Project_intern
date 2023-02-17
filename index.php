@@ -1,4 +1,3 @@
-
 <?php
 require('dbconnect.php');
 
@@ -16,42 +15,48 @@ $result = mysqli_query($con, $sql);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create_Project</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="style.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
+    <!-- Selecet2 -->
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Selecet2 -->
 </head>
 
 <body>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.owner').select2({
+                theme: 'bootstrap-5',
+                placeholder: "เลือกหัวหน้าโปรเจค",
+            });
+            $('.team').select2({
+                theme: 'bootstrap-5',
+                placeholder: "เลือกสมาชิกทีม",
+            
+            });
+        });
+    </script>
     <div class="container-fulid">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
-            <!-- Content -->
-            <div class="container-fluid">
-                <!-- Brand -->
-                <a href="index.php" class="navbar-brand">Project Tracking</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#Nav_bar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Menu -->
-                <div class="collapse navbar-collapse" id="Nav_bar">
-                    <ul class="navbar-nav ">
-                        <li class="nav-item active">
-                            <a href="index.php" class="nav-link">Create Project</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="task.php" class="nav-link">Task</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="display.php" class="nav-link">Display</a>
-                        </li>
+    <?php
+include 'nav.php';
 
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
+?>
         <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
 
             <form action="addProject.php" method="post" class="needs-validation">
@@ -65,33 +70,28 @@ $result = mysqli_query($con, $sql);
                         กรุณากรอกชื่อโปรเจค
                     </div>
                 </div>
+
+
                 <!-- DropDownเจ้าของโปรเจค -->
-                <div class="input-group mt-3 row-12">
-                    <div class="input-group-prepend">
-                        <label for="employeesid" class=" input-group-text custom-select custom-select-sm">เจ้าของโปรเจค</label>
-                    </div>
-                    <input class="form-control" list="emp" id="employeesid" placeholder="ใส่รหัสพนักงานเพื่อค้นหา" name="idemp" autocomplete="off">
-                    <div class="invalid-feedback">
-                        กรุณากรอกรหัสพนักงานเพื่อค้นหา
-                    </div>
 
-                    <template id="resultstemplate">
-                        <?php foreach ($result as $id) { ?>
+                <div class="input-group mt-3 ">
+                    <label for="employeesid" class="input-group-text">เจ้าของโปรเจค</label>
+                    <select class="owner form-select " name="idemp">
+                        <option value="" selected>>----เลือกเจ้าของโปรเจค----<< /option>
+                                <?php foreach ($result as $id) { ?>
 
-                            <option value="<?php echo $id['emp_id'] ?>">
-                                <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?></option>
+                        <option value="<?php echo $id['emp_id'] ?>">
+                            <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?>
+                        </option>
 
-                        <?php   } ?>
-
-                    </template>
-                    <datalist id="emp"> </datalist>
-
+                    <?php } ?>
+                    </select>
                 </div>
 
                 <!-- เลือกลูกทีม -->
                 <div class="input-group mt-3">
-                    <label class="input-group-text" for="inputGroupSelect02">เลือกสมาชิกทีม</label>
-                    <select id="team" class="form-select" size="3" multiple  name="team[]">
+                    <label class="input-group-text" for="team">เลือกสมาชิกทีม</label>
+                    <select id="team" class="team form-select" multiple="multiple" name="team[]">
                         <?php foreach ($result as $id) { ?>
 
                             <option value="<?php echo $id['emp_id'] ?>">
@@ -101,9 +101,9 @@ $result = mysqli_query($con, $sql);
                     </select>
                 </div>
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
-  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-</svg> กดต้องการเลือกหลายคนให้กด<strong>CTRLหรือSHIFT แล้วคลิ๊กเลือก</strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                    </svg> สามารถพิมพ์ค้นหาชื่อสมาชิกได้
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <!-- รายละเอียดงาน -->

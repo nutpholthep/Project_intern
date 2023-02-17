@@ -1,92 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-</head>
-<body>
-    <script>
-        $(document).ready(function() {
-  var table = $('#example').DataTable({
-    "columnDefs": [{      "targets": 0,      "data": null,      "defaultContent": "<button> Show details </button>"    }]
-  });
+<?php 
+// session_start();
 
-  $('#example tbody').on('click', 'button', function() {
-    var tr = $(this).closest('tr');
-    var row = table.row(tr);
+// $currentValue = 10; // ตัวอย่างค่าปัจจุบัน
 
-    if (row.child.isShown()) {
-      row.child.hide();
-      tr.removeClass('shown');
-    } else {
-      row.child(format(row.data())).show();
-      tr.addClass('shown');
-    }
-  });
+// if(isset($_POST['inputValue'])){
+//   $inputValue = $_POST['inputValue'];
+//   if($inputValue < $currentValue){
+//     $_SESSION['alert'] = true;
+//   }
+// }
 
-  function format(d) {
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-      '<tr>' +
-      '<td>Full name:</td>' +
-      '<td>' + d[0] + ' ' + d[1] + '</td>' +
-      '</tr>' +
-      '<tr>' +
-      '<td>Extension number:</td>' +
-      '<td>' + d[2] + '</td>' +
-      '</tr>' +
-      '<tr>' +
-      '<td>Extra info:</td>' +
-      '<td>And any further details here (images etc)...</td>' +
-      '</tr>' +
-      '</table>';
-  }
-});
+// if(isset($_SESSION['alert']) && $_SESSION['alert']){
+//   echo "<script>alert('ค่าที่คุณใส่น้อยกว่าค่าปัจจุบัน')</script>";
+//   $_SESSION['alert'] = false;
+// }
 
-    </script>
-<table id="example" class="display" style="width:100%">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Position</th>
-      <th>Office</th>
-      <th>Age</th>
-      <th>Start date</th>
-      <th>Salary</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Tiger Nixon</td>
-      <td>System Architect</td>
-      <td>Edinburgh</td>
-      <td>61</td>
-      <td>2011/04/25</td>
-      <td>$320,800</td>
-    </tr>
-    <tr>
-      <td>Tiger Nixon</td>
-      <td>System Architect</td>
-      <td>Edinburgh</td>
-      <td>61</td>
-      <td>2011/04/25</td>
-      <td>$320,800</td>
-    </tr>
-    <tr>
-      <td>Tiger Nixon</td>
-      <td>System Architect</td>
-      <td>Edinburgh</td>
-      <td>61</td>
-      <td>2011/04/25</td>
-      <td>$320,800</td>
-    </tr>
-    <!-- other rows... -->
-  </tbody>
-</table>
-</body>
-</html>
+// session_start();
+
+// $currentValue = 10; // ตัวอย่างค่าปัจจุบัน
+
+// if(isset($_POST['inputValue'])){
+//   $inputValue = $_POST['inputValue'];
+//   if($inputValue != $currentValue){
+//     // กรอกค่าไม่เท่ากับค่าปัจจุบัน
+//     // ทำสิ่งที่ต้องการเมื่อกรอกค่าที่ไม่เท่ากับค่าปัจจุบัน
+//   } else {
+//     // กรอกค่าเท่ากับค่าปัจจุบัน
+//     // ทำสิ่งที่ต้องการเมื่อกรอกค่าเท่ากับค่าปัจจุบัน
+//   }
+//   // อัพเดทค่าปัจจุบัน
+//   $currentValue = $inputValue;
+// }
+
+// // ตัวอย่างอัพเดทค่าปัจจุบันโดยการสุ่มเลขใหม่
+// $currentValue = rand(1, 100);
+
+$current_day = date("d");
+echo "Today is the " . $current_day . "th day of the month.";
+// if (isset($_POST["my-date-input"])) {
+//   $selected_date = $_POST["my-date-input"];
+//   $selected_day = date("d", strtotime($selected_date));
+//   echo "You selected day " . $selected_day . " of the month.";
+// }
+echo $current_datetime = date("Y-m-d H:i:s");
+
+
+?>
+<!-- <form method="post" action="test2.php">
+  <label for="my-date-input">Select a date:</label>
+  <input type="date" id="my-date-input" name="my-date-input">
+  <input type="submit" value="Submit">
+</form> -->
