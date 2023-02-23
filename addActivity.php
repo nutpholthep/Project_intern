@@ -9,7 +9,7 @@ $result = mysqli_query($con,$sql);
 
 if($result){
     header("location:task.php");
-  exit(0);
+
 }
 else{
     echo "เกิดข้อผิดพลาด";

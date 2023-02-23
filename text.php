@@ -39,8 +39,8 @@ $IdTask;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project_Page</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!-- start datatable  -->
@@ -57,14 +57,8 @@ $IdTask;
 
 
     <!-- select2 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-    <!-- Or for RTL support -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
     <!-- select2 -->
 
     <!-- responsive datatable -->
@@ -73,7 +67,7 @@ $IdTask;
     <!-- responsive datatable -->
 
     <!-- font-awsome -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- font-awsome -->
 
 </head>
@@ -81,8 +75,22 @@ $IdTask;
 <body>
     <script>
         $(document).ready(function() {
-            // modal หน้าแก้ไขรายละเอียดทั้งหมด
-            $("#open_edit").click(function() {
+            $(".open_update").click(function() {
+
+                let idx = $(this).attr('idx');
+                let idp = "<?php echo $_GET['idp']; ?>"; //รับค่าจากurl (ที่เป็นตัวอักษรมาเก็บในตัวแปร)
+                $.post("modalupdate.php", {
+                        id: idx,
+                        idp: idp //กำหนดArttr เพื่อส่งค่าไปหน้าอื่น
+                    },
+                    function(result) {
+                        $("#modal_update").html(result);
+                    }
+                );
+                // modal หน้าmodal edit
+
+            });
+            $(".open_edit").click(function() {
 
                 let idx = $(this).attr('idx');
 
@@ -93,11 +101,10 @@ $IdTask;
                         $("#modal_edit").html(result);
                     }
                 );
-
+                // modal หน้าmodal edit
 
             });
-            // modal หน้าแก้ไขActivity
-            $(".open_Edact").click(function() {
+            $(".open_edit_activity").click(function() {
 
                 let idx = $(this).attr('idx');
 
@@ -108,23 +115,7 @@ $IdTask;
                         $("#modal_edit_activity").html(result);
                     }
                 );
-
-
-            });
-            // modal update
-            $(".open_update").click(function() {
-
-                let idx = $(this).attr('idx');
-                let idp = "<?php echo $_GET['idp'] ?>"; //รับค่าจากurl (ที่เป็นตัวอักษรมาเก็บในตัวแปร)
-                $.post("modalupdate.php", {
-                        id: idx,
-                        idp: idp //กำหนดArttr เพื่อส่งค่าไปหน้าอื่น
-                    },
-                    function(result) {
-                        $("#modal_update").html(result);
-                    }
-                );
-
+                // modal หน้าmodal edit
 
             });
             // var groupColumn = 2;
@@ -132,39 +123,14 @@ $IdTask;
             var table = $('#progress').DataTable({
                 responsive: true,
                 "columnDefs": [{
-                        "targets": 3,
-                        "render": function(data, type, row, meta) {
-                            if(data<50){
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-danger text-dark fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';
-                            }else if(data<=80){
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-warning text-dark fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';
-                            }else if (data<=99){
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-info  fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';  
-                            }else{
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-success  fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';  
-                            }
-                        }
-
-                    }, {
-                        "targets": 4,
+                        "targets": [3, 4],
                         "render": function(data, type, row, meta) {
                             return '<div class="progress">' +
                                 '<div class="progress-bar bg-success" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
                                 '</div>' +
                                 '</div>';
                         }
+
                     }
                     // ColumnDefs คือคำสั่งที่เก็บการตกแต่งตารางในรูปแบบของ ArryObj
                     // , {
@@ -227,12 +193,9 @@ $IdTask;
         <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
 
 
-            <section>
+            <form action="edit_mainPage.php" method="post">
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                     <h1 class="text-center">รายละเอียดโปรเจค <?php echo $row['project_name'] ?></h1>
-
-                  
-                   
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">ชื่อโปรเจค</span>
@@ -374,9 +337,9 @@ $IdTask;
                         </table>
                     </div>
 
-            </section>
+            </form>
             <div class="d-flex justify-content-end mb-3 ">
-                <a href="#" id="open_edit" class="btn btn-warning mt-3 " data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $row['project_id'] ?>">แก้ไขรายละเอียด <i class="bi bi-pencil-square"></i></a>
+                <button class="btn btn-warning mt-3 open_edit" data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $row['project_id'] ?>">แก้ไขรายละเอียด <i class="bi bi-pencil-square"></i></button>
 
             </div>
             <div class="d-flex justify-content-end">
@@ -391,7 +354,7 @@ $IdTask;
         <?php } ?>
         <div class=" border-top mt-3">
             <h2 class="text-center">รายละเอียดงาน</h2>
-            <div>
+            <form action="" method="post">
                 <table class=" table table-dark table-striped mt-2 display responsive nowrap" id="progress">
                     <thead class="thead-dark">
                         <th>ลำดับที่</th>
@@ -405,29 +368,27 @@ $IdTask;
                     <tbody>
                         <?php while ($task = mysqli_fetch_assoc($result_task)) { ?>
                             <tr>
-                                <td class="text-end"><?php echo $order++ ?></td>
+                                <td><?php echo $order++ ?></td>
 
-                                <td class="table-light">
-                                    <h5><?php echo $task['task_name']; ?></h5>
-                                </td>
+                                <td><?php echo $task['task_name']; ?></td>
 
                                 <td>
 
-                                    <?php echo $task['activity_name']; ?> <a href="#" class=" btn text-info open_update" data-bs-toggle="modal" idx="<?php echo $task['activity_id'] ?>" data-bs-target="#add_update"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                    <?php echo $task['activity_name']; ?> <button  class=" btn text-primary open_update" data-bs-toggle="modal" idx="<?php echo $task['activity_id'] ?>" data-bs-target="#add_update"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
                                             <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
                                         </svg>
                                         <?php $IdTask = $task['task_id'] ?>
-                                    </a>
-                                    <a href="#" class="btn open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx="<?php echo $task['activity_id']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="yellow" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    </button> 
+                                    <a href="#" class="open_edit_activity" data-bs-target="#edit_activity" data-bs-toggle="modal" idx="<?php echo $task['activity_id']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="yellow" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                                        </svg></a>
+                                        </svg></i></a>
 
                                 </td>
                                 <td><?php echo $task['activity_progress'] ?></td>
 
                                 <!-- Query คำนวณ ProgressBar -->
-                                <?php $cout = "SELECT  COUNT(activity_progress),activity_progress,SUM(activity_progress)
+                                <?php $cout = "SELECT COUNT(activity_progress),activity_progress,SUM(activity_progress)
                                            FROM activity 
                                        WHERE  task_id = $IdTask";
                                 $respon = mysqli_query($con, $cout);
@@ -445,29 +406,19 @@ $IdTask;
                                     <td>0</td>
 
                                 <?php } else { ?>
-                                    <td><?php echo $sum = intval(($data['SUM(activity_progress)'] * 100) / ($data['COUNT(activity_progress)'] * 100)); ?></td>
-                                  <?php 
-                                //    print_r($sum);
-                              $total=$sum;
-                              echo $total;
-                           
-                              
-                             
-                                   ?>
+                                    <td><?php echo $sum = round(($data['SUM(activity_progress)'] * 100) / ($data['COUNT(activity_progress)'] * 100), 2); ?></td>
                                 <?php    } ?>
+
+
+
+
 
                             </tr>
 
                         <?php } ?>
                     </tbody>
                 </table>
-               
-                
-                <div class="progress mb-3" role="progressbar" aria-label="Info example" aria-valuenow="<?php echo $total?>" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar bg-info" style="width:<?= $total?>%"><?php echo $total.'%'; ?>
-                    </div>
-                    </div>
-            </div>
+            </form>
         </div>
         <?php echo $sum; ?>
         <!-- modal -->
@@ -488,25 +439,24 @@ $IdTask;
         </div>
 
 
-
         <!-- modal update -->
-        <div class="modal fade modal-lg" id="add_update">
+        <div class="modal fade  modal-lg" id="add_update">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title">อัพเดทความคืบหน้าของกิจกรรมย่อย</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <h5 class="modal-title">อัพเดทความคืบหน้าของกิจกรรมย่อย</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div id="modal_update"></div>
                     </div>
+
                 </div>
             </div>
         </div>
 
-
         <!-- modal edit activity -->
-        <div class="modal fade modal-lg" id="edit_activity">
+        <div class="modal fade  modal-lg" id="edit_activity">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -516,6 +466,7 @@ $IdTask;
                     <div class="modal-body">
                         <div id="modal_edit_activity"></div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -523,11 +474,6 @@ $IdTask;
         </div>
 
     </div>
-
-
-
-
-
 
     <?php
     // echo $row['project_id'];

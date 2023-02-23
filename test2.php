@@ -1,4 +1,7 @@
 <?php 
+// Include the QR Code library
+
+
 // session_start();
 
 // $currentValue = 10; // ตัวอย่างค่าปัจจุบัน
@@ -35,14 +38,6 @@
 // // ตัวอย่างอัพเดทค่าปัจจุบันโดยการสุ่มเลขใหม่
 // $currentValue = rand(1, 100);
 
-$current_day = date("d");
-echo "Today is the " . $current_day . "th day of the month.";
-// if (isset($_POST["my-date-input"])) {
-//   $selected_date = $_POST["my-date-input"];
-//   $selected_day = date("d", strtotime($selected_date));
-//   echo "You selected day " . $selected_day . " of the month.";
-// }
-echo $current_datetime = date("Y-m-d H:i:s");
 
 
 ?>

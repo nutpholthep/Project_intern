@@ -1,21 +1,19 @@
 <?php
 require('dbconnect.php');
 
-$sql = "SELECT p.project_id,p.project_name,p.create_time,p.dead_line,p.update_time,p.create_by,p.update_by,p.detail,p.team_member,emp.emp_id,emp.emp_fname,emp.emp_lname
+$sql = "SELECT p.project_id,p.project_name,p.create_time,p.dead_line,p.update_time,p.create_by,p.update_by,p.detail,p.owner,emp.emp_id,emp.emp_fname,emp.emp_lname
 FROM project_create AS p 
-right join employees AS emp on emp.emp_id = p.create_by";
+left join employees AS emp on emp.emp_id = p.create_by
+WHERE p.project_id = ".$_POST['id'];
+
+echo $sql;
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
+$sqlemp = "SELECT * FROM employees";
+$emp_result = mysqli_query($con, $sqlemp);
 
-$sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,activity.activity_name,activity.activity_progress,project_create.detail,activity.activity_id,task.project_id,project_create.project_id
-FROM task
-RIGHT JOIN  project_create ON project_create.project_id = task.project_id
-RIGHT JOIN  activity ON task.task_id = activity.task_id
-WHERE project_create.project_id =".$_POST['id'];
-// echo $sql2;
-$order =1;
-$result_task = mysqli_query($con, $sql2);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,29 +23,74 @@ $result_task = mysqli_query($con, $sql2);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+
+
+      <!-- Selecet2 -->
+    <!-- Styles -->
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
+    <!-- Or for RTL support -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
+
+    <!-- Scripts -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+    <!-- Selecet2 -->
 </head>
 
 <body>
+<script>
+        $(document).ready(function() {
 
+            $('.owner').select2({
+                theme: 'bootstrap-5',
+                placeholder: "เลือกชื่อเจ้าของโปรเจค",
+                dropdownParent: $('#edit_page')
+
+            });
+            $('.update_emp').select2({
+                theme: 'bootstrap-5',
+                placeholder: "เลือกรายชื่อ",
+                dropdownParent: $('#edit_page') ///ทำให้searchในmodalได้ โดยid คือ parentIDของmodal 
+            });
+            
+       
+  
+        });
+        </script>
     <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
         <form action="updateProject.php" method="post">
             <input type="hidden" name="idedit" value="<?php echo $row['project_id']; ?>">
             <h1 class="text-center">รายละเอียดโปรเจค <?php echo $row['project_name'] ?></h1>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">ชื่อโปรเจค</span>
-                </div>
-                <input type="text" name="project_Name" class="form-control" placeholder="ป้อนชื่อโปรเจค" value="<?php echo $row['project_name'] ?>">
-            </div>
-            <div class="input-group mt-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">ชื่อเจ้าของโปรเจค</span>
-                </div>
-                <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" value="<?php echo $row['emp_fname'] ?>">
-                <input type="text" name="project_Owner_lname" class="form-control" placeholder="ป้อนนามสกุล" value="<?php echo $row['emp_lname'] ?>">
-            </div>
+           <div>
+
+               <div class="input-group">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text">ชื่อโปรเจค</span>
+                   </div>
+                   <input type="text" name="project_Name" class="form-control" placeholder="ป้อนชื่อโปรเจค" value="<?php echo $row['project_name'] ?>">
+               </div>
+               <div class="input-group mt-3">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text">ชื่อเจ้าของโปรเจค</span>
+                   </div>
+                   <select class="owner" name="project_Owner_fname" >
+                        <option value="" selected>< /option>
+                                <?php foreach ($emp_result as $id) { ?>
+
+                        <option value="<?php echo $id['emp_id'] ?>">
+                            <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?>
+                        </option>
+
+                    <?php } ?>
+                    </select>
+               </div>
+           </div>
 
 
             <div class="input-group mt-3 row-12">
@@ -69,6 +112,22 @@ $result_task = mysqli_query($con, $sql2);
                 <textarea class="form-control" placeholder="รายละเอียดงานโปรเจค" id="floatingTextarea" name="detail"><?php echo $row['detail'] ?></textarea>
                 <label for="floatingTextarea">รายละเอียดงานโปรเจค</label>
             </div>
+
+            <div class="input-group mt-3">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text">คนที่อัพเดท</span>
+                   </div>
+                   <select class="update_emp form-select " name="update_emp" id="up_emp" required>
+                        <option value="" selected>>----เลือกรายชื่อ----<< /option>
+                                <?php foreach ($emp_result as $member) { ?>
+
+                        <option value="<?php echo $member['emp_id'] ?>">
+                            <?php echo $member['emp_id'] . " " . $member['emp_fname'] . " " . $member['emp_lname'] ?>
+                        </option>
+
+                    <?php } ?>
+                    </select>
+               </div>
             <div class="mt-3">
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -82,7 +141,7 @@ $result_task = mysqli_query($con, $sql2);
                     <tbody>
                         <tr>
 
-                            <?php if ($row['team_member'] == "") { ?>
+                            <?php if ($row['owner'] == "") { ?>
                                 <td colspan="3">
                                     <div class="alert alert-danger d-flex align-items-center" role="alert">
                                         <svg class="bi flex-shrink-0 me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-octagon" viewBox="0 0 16 16">
@@ -100,7 +159,7 @@ $result_task = mysqli_query($con, $sql2);
 
                             <?php } else { ?>
                                 <td><?= $row['emp_id'] ?></td>
-                                <td><?= $row['team_member'] ?></td>
+                                <td><?= $row['owner'] ?></td>
                                 <td rowspan="3">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
@@ -127,6 +186,8 @@ $result_task = mysqli_query($con, $sql2);
 
                 </table>
             </div>
+           
+
 
             
          
@@ -140,20 +201,7 @@ $result_task = mysqli_query($con, $sql2);
 
 
     </div>
-    <div class="modal fade" id="open_actName">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">อัพเดทความคืบหน้าของกิจกรรมย่อย</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="edit_actName"></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    
 
 </body>
 

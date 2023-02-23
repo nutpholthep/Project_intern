@@ -10,7 +10,7 @@ FROM task
 RIGHT JOIN  project_create ON project_create.project_id = task.project_id 
 /* Checking if the value of `task.status` is not in the set of values `(0)`. */
 WHERE task.task_id IS null OR task.status NOT IN(0)
-ORDER BY project_create.project_id";
+ORDER BY project_create.project_id DESC";
 
 
 $task_query = mysqli_query($con, $sql2);
@@ -29,10 +29,17 @@ $result = mysqli_query($con, $sql);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <!-- datatable -->
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
 
+   <script  src="https://code.jquery.com/jquery-3.5.1.js"></script>
+   <script  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+   <script  src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    
+   <!-- End datatable -->
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
@@ -44,6 +51,9 @@ $result = mysqli_query($con, $sql);
     <!-- Or for RTL support -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
+ <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
 
 
     <script>
@@ -66,7 +76,9 @@ $result = mysqli_query($con, $sql);
 
             });
 
-            $('#taskTable').DataTable();
+            $('#taskTable').DataTable({
+                responsive: true,
+            });
 
 
             $('.taskselect').select2({
@@ -80,13 +92,13 @@ $result = mysqli_query($con, $sql);
 </head>
 
 <body>
-    <div class="container-fluid">
         <?php
         include 'nav.php';
 
         ?>
+    <div class="container-fluid">
 
-        <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
+        <div class="container  shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
             <div class="  mt-3">
                 <h2 class="text-center">สร้างงาน</h2>
                 <form action="taskquery.php" method="post">
@@ -172,19 +184,7 @@ $result = mysqli_query($con, $sql);
         </div>
 
     </div>
-    <script>
-        function ExcelReport() //function สำหรับสร้าง ไฟล์ excel จากตาราง
-        {
-            var sheet_name = "excel_sheet"; /* กำหหนดชื่อ sheet ให้กับ excel โดยต้องไม่เกิน 31 ตัวอักษร */
-            var elt = document.getElementById('myTable'); /*กำหนดสร้างไฟล์ excel จาก table element ที่มี id ชื่อว่า myTable*/
 
-            /*------สร้างไฟล์ excel------*/
-            var wb = XLSX.utils.table_to_book(elt, {
-                sheet: sheet_name
-            });
-            XLSX.writeFile(wb, 'report.xlsx'); //Download ไฟล์ excel จากตาราง html โดยใช้ชื่อว่า report.xlsx
-        }
-    </script>
 
 </body>
 

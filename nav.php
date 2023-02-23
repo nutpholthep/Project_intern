@@ -7,7 +7,7 @@
    
 </style>
  
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top nav-pills">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top ">
             <!-- Content -->
             <div class="container-fluid">
                 <!-- Brand -->

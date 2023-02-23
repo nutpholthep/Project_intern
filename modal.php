@@ -35,7 +35,7 @@
 
         });
     </script>
-    <a href="" class="btn btn-info open_update" data-bs-target="#add_update" data-bs-toggle="modal" idx="<?php echo $task['task_id']; ?>">
+    <!-- <a href="" class="btn btn-info open_update" data-bs-target="#add_update" data-bs-toggle="modal" idx="< ?php echo $task['task_id']; ?>">
         <i class="bi bi-plus-circle-fill"></i>เพิ่มกิจกรรมย่อย
     </a>
      <div class="modal fade modal-xl" id="add_update">
@@ -51,7 +51,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div> -->
 </body>
 
 </html>

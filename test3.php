@@ -14,9 +14,9 @@ include('nav.php');
 
 <nav>
   <ul>
-    <li class="<?php if ($page == 'home') { echo 'active'; } ?>"><a href="home.php">Home</a></li>
-    <li class="<?php if ($page == 'about') { echo 'active'; } ?>"><a href="about.php">About</a></li>
-    <li class="<?php if ($page == 'contact') { echo 'active'; } ?>"><a href="contact.php">Contact</a></li>
+    <li class="<?php if ($page == 'home') { echo 'active'; } ?>"><a href="#">Home</a></li>
+    <li class="<?php if ($page == 'about') { echo 'active'; } ?>"><a href="#">About</a></li>
+    <li class="<?php if ($page == 'contact') { echo 'active'; } ?>"><a href="#">Contact</a></li>
   </ul>
 </nav>
 
