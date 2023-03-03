@@ -4,7 +4,7 @@ $sql2 = "SELECT task.task_id,activity.activity_id,activity.activity_name,activit
 FROM task
 left JOIN activity ON task.task_id = activity.task_id
 WHERE  activity.activity_id= " . $_POST['id'];
-echo $sql2;
+// echo $sql2;
 $act_query = mysqli_query($con, $sql2);
 $actN = 1;
 
@@ -45,12 +45,16 @@ $emp_query = mysqli_query($con,$empsql);
         <tbody>
           <?php while ($lact = mysqli_fetch_assoc($act_query)) { ?>
             <input type="hidden" name="act_id" value="<?php echo $lact['activity_id'] ?>">
+            <input type="hidden" name="act_name" value="<?php echo $lact['activity_name'] ?>">
+            
+           
             <tr>
               <td><?php echo $actN++ ?></td>
               <td><?php echo $lact['activity_name'] ?></td>
               
               <td> <input type="number" id="myInput" name="act_update" class="form-control" placeholder="ป้อนตัวเลข ค่าปัจจุบันคือ <?php echo $lact['activity_progress'] ?>" min="<?php echo $lact['activity_progress'] ?>" max="100"></td>
             </tr>
+            
   </div>
   </table>
   <div class="input-group mt-3">
@@ -59,14 +63,21 @@ $emp_query = mysqli_query($con,$empsql);
   <option value="">เลือกรายชื่อ</option>
       <?php foreach ($emp_query as $id) { ?>
 
-        <option value="< ?php echo $id['emp_id'] ?>">
+        <option value="<?php echo $id['emp_id'] ?>">
           <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?></option>
 
       <?php   } ?>
     </select>
   </div>
   <div class="modal-footer">
-    <button type="summit" class="btn btn-success" >บันทึกข้อมูล</button>
+  <?php 
+            if($lact['activity_progress']==100){?>
+              <button type="summit" class="btn btn-success disabled" >บันทึกข้อมูล</button>
+             <?php }else{ ?>
+
+               <button type="summit" class="btn btn-success" >บันทึกข้อมูล</button>
+          <?php }?>
+            
   </div>
 </form>
 <?php } ?>

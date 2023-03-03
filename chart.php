@@ -8,16 +8,11 @@
     <title>chart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
+  
+
 </head>
 
 <body>
-    <style>
-        /* #chartcontainer{
-            width: 1000px;
-        } */
-    </style>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="
 https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
@@ -77,13 +72,43 @@ https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
 
 
     <div class="container-fulid">
-        <div class="container-fulid mt-5 p-4 ">
-            <div class=" row justify-content-center " id="chartcontainer">
+        <!-- <div class="container-fulid mt-5 p-4 ">
+            <div class=" row justify-content-center " id="chartcontainer" style="position: relative; height:40vh; width:80vw">
                 <div class="col-12-sm col-6">
-                    <canvas id="report" class="w-3 h-2"></canvas>
+                    <canvas id="report"></canvas>
                 </div>
             </div>
 
+        </div> -->
+
+        <div class="row">
+        <div class="card">
+<div class="card-header ui-sortable-handle" style="cursor: move;">
+<h3 class="card-title">
+<i class="fas fa-chart-pie mr-1"></i>
+Sales
+</h3>
+<div class="card-tools">
+<ul class="nav nav-pills ml-auto">
+<li class="nav-item">
+<a class="nav-link" href="#revenue-chart" data-toggle="tab">Area</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="#sales-chart" data-toggle="tab">Donut</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="card-body">
+<div class="tab-content p-0">
+
+
+<div class="chart tab-pane active" id="sales-chart" ><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+<canvas id="report"  style="height: 300px; display: block; width: 250px;" class="chartjs-render-monitor" width="622"></canvas>
+</div>
+</div>
+</div>
+</div>
         </div>
     </div>
 

@@ -6,7 +6,7 @@ FROM project_create AS p
 left join employees AS emp on emp.emp_id = p.create_by
 WHERE p.project_id = ".$_POST['id'];
 
-echo $sql;
+// echo $sql;
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -23,24 +23,6 @@ $emp_result = mysqli_query($con, $sqlemp);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
-
-
-      <!-- Selecet2 -->
-    <!-- Styles -->
-
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
-    <!-- Or for RTL support -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
-
-    <!-- Scripts -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
-    <!-- Selecet2 -->
 </head>
 
 <body>
@@ -79,7 +61,7 @@ $emp_result = mysqli_query($con, $sqlemp);
                    <div class="input-group-prepend">
                        <span class="input-group-text">ชื่อเจ้าของโปรเจค</span>
                    </div>
-                   <select class="owner" name="project_Owner_fname" >
+                   <select class="owner" name="owner" required>
                         <option value="" selected>< /option>
                                 <?php foreach ($emp_result as $id) { ?>
 
@@ -117,7 +99,7 @@ $emp_result = mysqli_query($con, $sqlemp);
                    <div class="input-group-prepend">
                        <span class="input-group-text">คนที่อัพเดท</span>
                    </div>
-                   <select class="update_emp form-select " name="update_emp" id="up_emp" required>
+                   <select class="update_emp form-select " name="update_by" id="up_emp" required>
                         <option value="" selected>>----เลือกรายชื่อ----<< /option>
                                 <?php foreach ($emp_result as $member) { ?>
 
@@ -128,82 +110,12 @@ $emp_result = mysqli_query($con, $sqlemp);
                     <?php } ?>
                     </select>
                </div>
-            <div class="mt-3">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>รหัสพนักงาน</th>
-                            <th>ชื่อสมาชิก</th>
-                            <th>งานที่รับผิดชอบ</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-
-                            <?php if ($row['owner'] == "") { ?>
-                                <td colspan="3">
-                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                        <svg class="bi flex-shrink-0 me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-octagon" viewBox="0 0 16 16">
-                                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353L4.54.146zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1H5.1z" />
-                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
-                                        </svg>
-                                        <use xlink:href="#exclamation-triangle-fill" />
-                                        </svg>
-                                        <div>
-                                            ยังไม่มีการเพิ่มสมาชิก
-                                            
-                                        </div>
-                                    </div>
-                                </td>
-
-                            <?php } else { ?>
-                                <td><?= $row['emp_id'] ?></td>
-                                <td><?= $row['owner'] ?></td>
-                                <td rowspan="3">
-                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-headingOne">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                                    งานที่ได้รับมอบหมาย
-                                                </button>
-                                            </h2>
-                                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body">
-                                                    <ul>
-                                                        <li><?= $row['project_name'] ?></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                        </tr>
-                    <?php } ?>
-
-                    </tbody>
-
-
-                </table>
-            </div>
-           
-
-
-            
-         
-
-
+              
             <div class="modal-footer">
-                
                 <button class="btn btn-success">บันทึกข้อมูล</button>
             </div>
         </form>
-
-
     </div>
     
-
 </body>
-
-
 </html>

@@ -11,7 +11,7 @@ RIGHT JOIN  project_create ON project_create.project_id = task.project_id
 /* Checking if the value of `task.status` is not in the set of values `(0)`. */
 WHERE task.task_id IS null OR task.status NOT IN(0)
 ORDER BY project_create.project_id DESC";
-
+ $a = ""; //ตัวแปรที่เอาไว้เก็บค่าProject_Name
 
 $task_query = mysqli_query($con, $sql2);
 $result = mysqli_query($con, $sql);
@@ -33,13 +33,13 @@ $result = mysqli_query($con, $sql);
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
 
-   <script  src="https://code.jquery.com/jquery-3.5.1.js"></script>
-   <script  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-   <script  src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
-    
-   <!-- End datatable -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- End datatable -->
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
@@ -53,7 +53,7 @@ $result = mysqli_query($con, $sql);
 
 
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
- <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
 
 
     <script>
@@ -92,10 +92,10 @@ $result = mysqli_query($con, $sql);
 </head>
 
 <body>
-        <?php
-        include 'nav.php';
+    <?php
+    include 'nav.php';
 
-        ?>
+    ?>
     <div class="container-fluid">
 
         <div class="container  shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
@@ -133,8 +133,17 @@ $result = mysqli_query($con, $sql);
                         <tbody>
                             <?php while ($task = mysqli_fetch_assoc($task_query)) { ?>
                                 <tr>
+                                    <?php
+                                    // เงื่อนไขคือ เก็บproject_nameไว้ในตัวแปร a ลูปแรกที่เจอ project_name
+                                    // เมื่อเข้าลูปที่ 2 ถ้าเจอproject_name ชื่อเดิมจะมีค่าเป็นจะให้เป็นค่าว่าง
+                                    if ($a == $task['project_name']) {
+                                        $b = "";
+                                    } else {
+                                        $b = $task['project_name'];
+                                    }
+                                    ?>
                                     <td><?php echo $order++ ?></td>
-                                    <td><?php echo $task['project_name']; ?></td>
+                                    <td><?php echo $b; ?></td>
                                     <td><?php echo $task['task_name']; ?></td>
                                     <td>
 
@@ -156,10 +165,18 @@ $result = mysqli_query($con, $sql);
                                     </td>
 
                                     <td>
-                                        <a href="deletetask.php?idtask=<?php echo $task['task_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')"><i class="bi bi-trash"></i>ลบงาน</a>
+                                    <?php
+                                        if ($task['task_id'] == '') { ?>
+                                             <a href="deletetask.php?idtask=<?php echo $task['task_id']; ?>" class="btn btn-danger disabled" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')"><i class="bi bi-trash"></i>ลบงาน</a>
+                                        <?php   } else { ?>
+
+                                            <a href="deletetask.php?idtask=<?php echo $task['task_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')"><i class="bi bi-trash"></i>ลบงาน</a>
+                                        <?php   } ?>
                                     </td>
                                 </tr>
-                            <?php } ?>
+
+                            <?php $a = $task['project_name'];
+                            } ?>
                         </tbody>
                     </table>
                 </form>

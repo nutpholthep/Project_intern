@@ -28,7 +28,7 @@
                             <a href="display.php" class="nav-link">Display</a>
                         </li>
                         <li class="nav-item">
-                            <a href="chart.php" class="nav-link">Report</a>
+                            <a href="report.php" class="nav-link">Report</a>
                         </li>
 
                     </ul>

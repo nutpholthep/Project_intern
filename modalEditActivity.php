@@ -19,22 +19,6 @@ $emp_query = mysqli_query($con,$empsql);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
-    <!-- Or for RTL support -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
-
-
-    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
- <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script> -->
-
-
 </head>
 <body>
 <script>
@@ -55,7 +39,7 @@ $emp_query = mysqli_query($con,$empsql);
                     </thead>
                     <tbody >
                       <?php while($lact=mysqli_fetch_assoc($act_query)){ ?>
-                        <input type="text" name="act_id" value="<?php echo $lact['activity_id']?>">
+                        <input type="hidden" name="act_id" value="<?php echo $lact['activity_id']?>">
                         <input type="hidden" name="task_id" value="<?php echo $lact['task_id']?>">
                         <input type="hidden" name="pro_id" value="<?php echo $lact['project_id']?>">
                            
@@ -74,7 +58,7 @@ $emp_query = mysqli_query($con,$empsql);
   <option value="">เลือกรายชื่อ</option>
       <?php foreach ($emp_query as $id) { ?>
 
-        <option value="< ?php echo $id['emp_id'] ?>">
+        <option value="<?php echo $id['emp_id'] ?>">
           <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?></option>
 
       <?php   } ?>

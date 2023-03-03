@@ -36,7 +36,7 @@ $result = mysqli_query($con, $sql);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Selecet2 -->
-    
+
 </head>
 
 <body>
@@ -50,19 +50,19 @@ $result = mysqli_query($con, $sql);
             $('.team').select2({
                 theme: 'bootstrap-5',
                 placeholder: "เลือกสมาชิกทีม",
-            
+
             });
             $('.createBy').select2({
                 theme: 'bootstrap-5',
                 placeholder: "เลือกชื่อของคุณ",
-            
+
             });
         });
     </script>
     <?php
-include 'nav.php';
+    include 'nav.php';
 
-?>
+    ?>
     <div class="container-fulid">
         <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
 
@@ -94,25 +94,29 @@ include 'nav.php';
                     <?php } ?>
                     </select>
                 </div>
-                <div class="input-group mt-3 ">
+
+                <!-- Start คนที่สร้างโปรเจค -->
+                <!-- <div class="input-group mt-3 ">
                     <label for="employeesid" class="input-group-text">คนที่สร้างโปรเจค</label>
                     <select class="createBy form-select " name="createBy">
                         <option value="" selected>>----เลือกคนที่สร้างโปรเจค----<</option>
-                                <?php foreach ($result as $id) { ?>
+                                < ?php foreach ($result as $id) { ?>
 
-                        <option value="<?php echo $id['emp_id'] ?>">
-                            <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?>
+                        <option value="< ?php echo $id['emp_id'] ?>">
+                            < ?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?>
                         </option>
 
-                    <?php } ?>
+                    < ?php } ?>
                     </select>
-                </div>
+                </div> -->
+                <!-- End คนที่สร้างโปรเจค -->
 
+                
                 <!-- เลือกลูกทีม -->
                 <div class="input-group mt-3">
                     <label class="input-group-text" for="team">เลือกสมาชิกทีม</label>
                     <select id="team" class="team form-select" multiple="multiple" name="team[]">
-              
+
                         <?php foreach ($result as $id) { ?>
 
                             <option value="<?php echo $id['emp_id'] ?>">
@@ -140,7 +144,7 @@ include 'nav.php';
                     <div class="input-group-prepend">
                         <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
                     </div>
-                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo date('Y-m-d',strtotime('+6 months')) ?> ">
+                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo date('Y-m-d', strtotime('+6 months')) ?> ">
                     <div class="invalid-feedback">
                         กรุณาเลือกวันสิ้นสุดโปรเจค
                     </div>

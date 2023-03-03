@@ -4,6 +4,7 @@ $task_id =$_POST['task_id'];
 $act_id = $_POST['act_id'];
 $eAct_id =$_POST['edit_act'];
 $proj_id =$_POST['pro_id'];
+$edit_by =$_POST['edit_by'];
 $sql = "UPDATE activity 
 SET activity_name = '$eAct_id'
 WHERE activity_id =$act_id and task_id = $task_id";
@@ -13,8 +14,14 @@ $result =mysqli_query($con,$sql);
 
 
 if($result){
-  
-    header("location:mainpage.php?idp=".$proj_id);
+//   $history_edit ="INSERT INTO history_edit_activity(edit_by,activity_id,activity_name,) 
+//   VALUE('$edit_by','$act_id','$eAct_id')";
+header("location:mainpage.php?idp=".$proj_id);
+// $history_query = mysqli_query($con,$history_edit);
+// if($history_query){
+
+//     
+// }
  }else{
      mysqli_error($con);
  }
