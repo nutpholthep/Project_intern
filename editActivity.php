@@ -14,14 +14,15 @@ $result =mysqli_query($con,$sql);
 
 
 if($result){
-//   $history_edit ="INSERT INTO history_edit_activity(edit_by,activity_id,activity_name,) 
-//   VALUE('$edit_by','$act_id','$eAct_id')";
-header("location:mainpage.php?idp=".$proj_id);
-// $history_query = mysqli_query($con,$history_edit);
-// if($history_query){
+  $history_edit ="INSERT INTO history_edit_activity(edit_by,activity_id,activity_name) 
+  VALUE('$edit_by','$act_id','$eAct_id')";
+$history_query = mysqli_query($con,$history_edit);
+// print_r($_POST);
+// exit;
 
-//     
-// }
+if($history_query){
+    header("location:mainpage.php?idp=".$proj_id);
+}
  }else{
      mysqli_error($con);
  }

@@ -19,22 +19,32 @@ $result = mysqli_query($con, $sql);
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bootstrap-5.2.3/dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.2.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="jquery/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="select2-develop/dist/css/select2.min.css">
+    <script src="select2-develop/dist/js/select2.min.js"></script>
+    <script src="select2-develop/dist/js/boostrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="select2-develop/dist/css/select2-bootstrap-5-theme.min.css">
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script> -->
 
     <!-- Selecet2 -->
     <!-- Styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
     <!-- Or for RTL support -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
     <!-- Selecet2 -->
 
 </head>
@@ -85,13 +95,13 @@ $result = mysqli_query($con, $sql);
                     <label for="employeesid" class="input-group-text">เจ้าของโปรเจค</label>
                     <select class="owner form-select " name="idemp">
                         <option value="" selected>>----เลือกเจ้าของโปรเจค----<< /option>
-                                <?php foreach ($result as $id) { ?>
+                                <?php foreach ($result as $id) : ?>
 
                         <option value="<?php echo $id['emp_id'] ?>">
                             <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?>
                         </option>
 
-                    <?php } ?>
+                    <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -117,12 +127,12 @@ $result = mysqli_query($con, $sql);
                     <label class="input-group-text" for="team">เลือกสมาชิกทีม</label>
                     <select id="team" class="team form-select" multiple="multiple" name="team[]">
 
-                        <?php foreach ($result as $id) { ?>
+                        <?php foreach ($result as $id) : ?>
 
                             <option value="<?php echo $id['emp_id'] ?>">
                                 <?php echo $id['emp_id'] . " " . $id['emp_fname'] . " " . $id['emp_lname'] ?></option>
 
-                        <?php   } ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -144,7 +154,7 @@ $result = mysqli_query($con, $sql);
                     <div class="input-group-prepend">
                         <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
                     </div>
-                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo date('Y-m-d', strtotime('+6 months')) ?> ">
+                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo Date('Y-m-d', strtotime("+3 Month "));?>" >
                     <div class="invalid-feedback">
                         กรุณาเลือกวันสิ้นสุดโปรเจค
                     </div>

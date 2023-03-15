@@ -32,15 +32,15 @@ $order = 1;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> -->
     <!-- <script src="jquery-3.3.1.min.js"></script> -->
 
 
     <!-- new datatale -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -49,8 +49,31 @@ $order = 1;
 
 
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
-    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script> -->
+  <!-- bootstrap -->
+  <link rel="stylesheet" href=/bootstrap-5.2.3/dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.2.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+ <!-- End bootstrap -->
 
+    <!-- datatable -->
+  <link rel="stylesheet" href="datatable/boostrap.min.css">
+  <link rel="stylesheet" href="datatable/dataTables.bootstrap5.min.css">
+    <script src="jquery/jquery-3.5.1.min.js"></script>
+    <script src="datatable/jquery.dataTables.min.js"></script>
+    <script src="datatable/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="datatable/responsive.dataTables.min.css">
+    <script src="datatable/dataTables.responsive.min.js"></script>
+    <!-- End datatable -->
+
+
+    <!-- select 2 -->
+    <link rel="stylesheet" href="select2-develop/dist/css/select2.min.css">
+    <script src="select2-develop/dist/js/select2.min.js"></script>
+    <script src="select2-develop/dist/js/boostrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="select2-develop/dist/css/select2-bootstrap-5-theme.min.css">
+     <!-- End select 2 -->
 
 </head>
 
