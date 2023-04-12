@@ -154,7 +154,7 @@ $result = mysqli_query($con, $sql);
                     <div class="input-group-prepend">
                         <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
                     </div>
-                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo Date('Y-m-d', strtotime("+3 Month "));?>" >
+                    <input type="date" name="dead_line" id="deadline" min="<?php echo date('Y-m-d'); ?>" class="form-control col-lg-4" max="<?php echo Date('Y-m-d', strtotime("+6 Month "));?>" >
                     <div class="invalid-feedback">
                         กรุณาเลือกวันสิ้นสุดโปรเจค
                     </div>

@@ -1,7 +1,5 @@
 <?php
-error_reporting(0);
 require('dbconnect.php');
-require('func.php');
 $id = $_GET['idp'];
 $total = 0;
 $numTask = 0;
@@ -54,6 +52,34 @@ $a = "";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project_Page</title>
 
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+
+    <!-- start datatable  -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script> -->
+
+    <!-- end datatable  -->
+
+    <!-- select2 -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
+    <!-- Or for RTL support -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
+    <!-- select2 -->
+
+    <!-- responsive datatable -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script> -->
+    <!-- responsive datatable -->
 
     <!-- bootstrap -->
     <link rel="stylesheet" href=/bootstrap-5.2.3/dist/css/bootstrap.min.css">
@@ -158,7 +184,7 @@ $a = "";
                 "processing": true,
                 "autoWidth": true,
                 "columnDefs": [{
-                        "targets": 4,
+                        "targets": 3,
                         "render": function(data, type, row, meta) {
                             if (data <= 99) {
                                 return '<div class="progress">' +
@@ -174,7 +200,7 @@ $a = "";
                         }
 
                     }, {
-                        "targets": 5,
+                        "targets": 4,
                         "render": function(data, type, row, meta) {
                             return '<div class="progress">' +
                                 '<div class="progress-bar bg-success" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
@@ -359,7 +385,6 @@ $a = "";
                                     <th>ลำดับที่</th>
                                     <th>ชื่องาน</th>
                                     <th>กิจกรรมย่อย</th>
-                                    <th>Action</th>
                                     <th>ความคืบหน้ากิจกรรมย่อย</th>
                                     <th>ความคืบหน้าทั้งหมด</th>
                                 </tr>
@@ -381,51 +406,73 @@ $a = "";
                                         <td class="table-light">
                                             <h5><?php echo $tasknew ?></h5>
                                         </td>
+
                                         <td>
-                                       <?= $task["activity_name"]; ?>
+
+                                            <?php echo $task['activity_name']; ?> <a href="#" class=" btn btn-success open_update " data-bs-toggle="modal" idx="<?php echo $task['activity_id'] ?>" data-bs-target="#add_update"><span class="lnr lnr-sync fw-bold"></span>
+                                            </a>
+
+                                            <a href="#" class="btn bg-warning open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx="<?php echo $task['activity_id']; ?>"><span class="lnr lnr-pencil fw-bold"></span></a>
+
                                         </td>
-                                        <td>
-
-                                            <?php  if($task['activity_progress']==100){
-                                                 echo '';
-     
-                                                echo' <a href="#" class="btn d-grid bg-warning  justify-content-end    open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx=" '.$task["activity_id"].' "><span class="lnr lnr-pencil fw-bold pe-3"></span></a></td>';
-                                            }else{
-                                                echo ' <a href="#" class=" btn btn-success open_update " data-bs-toggle="modal" idx="'.$task["activity_id"].'" data-bs-target="#add_update"><span class="lnr lnr-sync fw-bold"></span>
-                                                </a>';
-    
-                                               echo' <a href="#" class="btn bg-warning open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx=" '.$task["activity_id"].' "><span class="lnr lnr-pencil fw-bold"></span></a></td>';
-                                            }
-                                           
-
-                                        ?>
-
                                         <td><?php echo $task['activity_progress'] ?></td>
 
                                         <!-- Query คำนวณ ProgressBar -->
-                                        <?php
-                                            $progress = progress_Bar($task['task_id']);
+                                        <?php $cout = "SELECT  COUNT(activity_progress),activity_progress,SUM(activity_progress)
+                                           FROM activity 
+                                       WHERE  task_id = " . $task['task_id'];
+                                        $respon = mysqli_query($con, $cout);
+                                        while ($data = mysqli_fetch_assoc($respon)) { ?>
+                                            <?php
+                                            if ($data['activity_progress'] == " ") { ?>
+                                                <td>0</td>
+                                            <?php } else { ?>
+                                                <?php
+                                                $sum   = intval(($data['SUM(activity_progress)'] * 100) / ($data['COUNT(activity_progress)'] * 100));
 
-                                            if($prev == $progress){
-                                                echo '<td>0</td>';
-                                            }else{
-                                                echo '<td> '.$progress.'</td>';
+                                                if ($total_progress == $sum) {
+                                                    $b = " 0";
+                                                } else {
+                                                    $b = $sum;
+                                                } ?>
+
+                                                <td><?php echo $b; ?></td>
+                                        <?php
                                             }
-                                            $prev=$progress;
-                                             ?>
+                                            $total_progress = intval(($data['SUM(activity_progress)'] * 100) / ($data['COUNT(activity_progress)'] * 100));
+
+                                            if ($total_progress == 100) {
+                                                echo '555';
+                                                echo '<a href="#" class="btn bg-warning open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx="<?php echo $task["activity_id"]; ?>"><span class="lnr lnr-pencil fw-bold"></span></a>';
+                                            }
+                                        }
+
+                                        ?>
+
+
+
                                     </tr>
 
                                     <?php
                                     //   ความคืบหน้าโปรเจคทั้งหมด
-                                //    echo $task['activity_id'];
-                                echo $id;
-                                  echo $progress_proj = Total_progress($id);
-                                         } 
-                                        ?>
+                                    $task_total = "SELECT  activity_progress,task_id,COUNT(activity_progress),SUM(activity_progress)
+                                        FROM activity 
+                                          WHERE  activity_id = " . $task['activity_id'];
+                                    $task_pro = mysqli_query($con, $task_total);
+                                    foreach ($task_pro as $sumt) {
+                                        $num = $sumt['activity_progress']; //เก็บค่าActtivityทั้งหมด
+                                        $numrow = $sumt['COUNT(activity_progress)']; //นับจำนวนแถวทั้งหมด
+                                        //  echo$IdTask;
+                                        $numTask += $numrow; //นับจำนวนแถวทั้งหมด
+                                        $total += $num; //เก็บค่าActtivityทั้งหมดมารวมกัน
+                                    } ?>
+                                <?php
+                                    $taskName = $task['task_name'];
+                                } ?>
 
                                 <?php
                                 //ตัวแปรที่เก็บค่าสูตรคำนวณโดยวิธีคิด จำนวนActtivityทั้งหมด*100/จำนวนแถวทั้งหมด
-                                if ($progress_proj== 0) { ?>
+                                if ($numTask == 0) { ?>
 
                                     <div id="detailProgress">
                                         <h3 class="text-decoration-underline badge bg-secondary text-wrap">ความคืบหน้าของโปรเจคโดยรวม</h3>
@@ -435,14 +482,14 @@ $a = "";
                                         </div>
                                     </div>
                                 <?php  } else {
-                                   
+                                    $result_progessBar =  round(($total * 100) / ($numTask * 100), 2);
                                     //  คำสั่งQueryคำนวณ
                                 ?>
                                     <div id="detailProgress">
-                                        <input type="hidden" name="result_progessBar" value="<?php echo $progress_proj ?>">
+                                        <input type="hidden" name="result_progessBar" value="<?php echo $result_progessBar ?>">
                                         <h3 class="text-decoration-underline badge bg-secondary text-wrap">ความคืบหน้าของโปรเจคโดยรวม</h3>
-                                        <div class="progress mb-3" role="progressbar" aria-label="Info example " aria-valuenow="<?php echo  $progress_proj ?>" aria-valuemin="0" aria-valuemax="100" style="height: 1.5rem;">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated " style="width:<?= $progress_proj ?>%"><?php echo  $progress_proj . '%'; ?>
+                                        <div class="progress mb-3" role="progressbar" aria-label="Info example " aria-valuenow="<?php echo  $result_progessBar ?>" aria-valuemin="0" aria-valuemax="100" style="height: 1.5rem;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated " style="width:<?= $result_progessBar ?>%"><?php echo  $result_progessBar . '%'; ?>
                                             </div>
                                         </div>
                                     </div>

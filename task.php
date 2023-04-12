@@ -26,42 +26,25 @@ $emp_query = mysqli_query($con, $emp_sql);
     <script src="bootstrap-5.2.3/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+
 
     <!-- datatable -->
     <link rel="stylesheet" href="datatable/boostrap.min.css">
     <link rel="stylesheet" href="datatable/dataTables.bootstrap5.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css"> -->
+   
 
     <script src="jquery/jquery-3.5.1.min.js"></script>
     <script src="datatable/jquery.dataTables.min.js"></script>
     <script src="datatable/dataTables.bootstrap5.min.js"></script>
-    <!-- <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script> -->
-
+ 
     <!-- End datatable -->
 
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> -->
 
     <!-- select 2 -->
     <link rel="stylesheet" href="select2-develop/dist/css/select2.min.css">
     <script src="select2-develop/dist/js/select2.min.js"></script>
     <script src="select2-develop/dist/js/boostrap.bundle.min.js"></script>
     <link rel="stylesheet" href="select2-develop/dist/css/select2-bootstrap-5-theme.min.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" /> -->
-    <!-- Or for RTL support -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" /> -->
-
-    <!-- End select 2  -->
-    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
-    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script> -->
 
     <link rel="stylesheet" href="datatable/responsive.dataTables.min.css">
     <script src="datatable/dataTables.responsive.min.js"></script>
@@ -88,7 +71,7 @@ $emp_query = mysqli_query($con, $emp_sql);
             });
 
             $('#taskTable').DataTable({
-                
+
                 "ordering": false,
                 // ที่ต้องใส่ordering เพราะถ้าให้เรียงแบบขึ้นแถวใหม่เป็นเลเวลต้องยกเลิกการเรียงลำดับ
 
@@ -171,75 +154,36 @@ $emp_query = mysqli_query($con, $emp_sql);
                         <?php while ($task = mysqli_fetch_assoc($task_query)) {
 
 
-                            // เงื่อนไขคือ เก็บproject_nameไว้ในตัวแปร a ลูปแรกที่เจอ project_name
-                            // เมื่อเข้าลูปที่ 2 ถ้าเจอproject_name ชื่อเดิมจะมีค่าเป็นจะให้เป็นค่าว่าง
-                            // if ($a == $task['project_name']) {
-                            //     $b = "";
-                            //     echo "<tr>";
-                            //     echo "<td></td>";
-                            //     echo "<td>$b</td>";
-                            //     echo "<td></td>";
-
-                            //     echo "<td>".$task['task_name']."</td>";
-                            //     echo "<td>";
-
-                            //     if ($task['task_name'] == '') { 
-                            //       echo  "<a href='' class='btn btn-info open_activity' disabled>
-                            //             <i class='bi bi-plus-circle-fill'></i>
-                            //             เพิ่มกิจกรรมย่อย
-                            //         </a>";
-                            //       } else { 
-
-                            //        echo "<a href='' class='btn btn-info open_activity 'data-bs-target='#add_act' data-bs-toggle='modal' idx=' ".$task['task_id']." .'>
-                            //             <i class='bi bi-plus-circle-fill'></i>
-                            //             เพิ่มกิจกรรมย่อย
-                            //         </a>";
-                            //        } 
-                            //   echo"</td>";
-                            //   echo "<td>";
-                            //   if ($task['task_id'] == '') { 
-                            //  echo   "<a href='deletetask.php?idtask=".$task['task_id']."'  class='btn btn-danger disabled' onclick=' return confirm(\'ต้องการลบข้อมูลหรือไม่??\')'><i class='bi bi-trash'></i>ลบงาน</a>";
-                            //   } else { 
-
-                            //  echo  " <a href='deletetask.php?idtask= ".$task['task_id']."' class='btn btn-danger' onclick=' return confirm(\'ต้องการลบข้อมูลหรือไม่??\')'><i class='bi bi-trash'></i>ลบงาน</a>";
-                            //   }
-                            //  echo" </td>";
-                            //     echo "</tr>";
-                            // } else {
-                            //     $b = $task['project_name'];
-                            //     echo "<tr>";
-                            //      echo "<td>$order++</td>";
-                            //      echo "<td>".$b."</td>";
-                            //      echo "<td></td>";
-                            //      echo "<td></td>";
-                            //      echo "<td></td>";
-                            //     echo "</tr>";
-
-                            // }
-                            // $a = $task['project_name'];
                             if ($a != $task['project_name']) {
-                            echo $a ."<br>";
+                                // echo $a ."<br>";
                                 echo "<tr class='table-secondary'>";
-                                echo "<td>".$order++."</td>";
+                                echo "<td>" . $order++ . "</td>";
                                 echo "<td >" . $task['project_name'] . "</td>";
                                 echo "<td></td>";
                                 echo "<td></td>";
                                 echo "<td></td>";
                                 echo "</tr>";
                             }
-                    
-                          
+
+
                             echo "<tr>";
                             echo "<td></td>";
                             echo "<td></td>";
                             echo "<td>" . $task['task_name'] . "</td>";
-                            echo "<td><a href='' class='btn btn-info open_activity 'data-bs-target='#add_act' data-bs-toggle='modal' idx=' ".$task['task_id']."'>
-                                <i class='bi bi-plus-circle-fill'></i>
-                                    เพิ่มกิจกรรมย่อย
-                                    </a></td>";
-                            echo "<td><a href='deletetask.php?idtask=".$task['task_id']."'  class='btn btn-danger ' onclick=' return confirm(\'ต้องการลบข้อมูลหรือไม่??\')'><i class='bi bi-trash'></i>ลบงาน</a></td>";
-                            echo "</tr>";
-                          
+                            if (isset($task['task_id'])) {
+
+                                echo "<td><a href='' class='btn btn-info open_activity 'data-bs-target='#add_act' data-bs-toggle='modal' idx=' " . $task['task_id'] . "'>
+                                    <i class='bi bi-plus-circle-fill'></i>
+                                        เพิ่มกิจกรรมย่อย
+                                        </a></td>";
+                                echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick=' return confirm(\'ต้องการลบข้อมูลหรือไม่??\')'><i class='bi bi-trash'></i>ลบงาน</a></td>";
+                                echo "</tr>";
+                            } else {
+                                echo '<td></td>';
+                                echo '<td></td>';
+                            }
+
+
                             $a = $task['project_name'];
                         } ?>
                     </tbody>

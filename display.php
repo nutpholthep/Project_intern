@@ -75,6 +75,7 @@ $order = 1;
     <link rel="stylesheet" href="select2-develop/dist/css/select2-bootstrap-5-theme.min.css">
      <!-- End select 2 -->
 
+  
 </head>
 
 <body>
@@ -83,6 +84,7 @@ $order = 1;
         $(document).ready(function() {
             var table = $('#myTable').DataTable({
                 responsive: true,
+       
                 "columnDefs": [{
                         // progress_Bar
                         "targets": 7,
@@ -151,8 +153,8 @@ $order = 1;
                             </td>
                             <td><?php echo $task['emp_fname'] . " " . $task['emp_lname'] ?></td>
                             <td><?php echo $task['detail'] ?></td>
-                            <td class="text-success fw-bold"><?php echo date("d-m-Y ", strtotime($task['create_time'])) ?></td>
-                            <td class="text-danger fw-bold"><?php echo date("d-m-Y ", strtotime($task['dead_line'])) ?></td>
+                            <td class="text-success fw-bold"><?php echo date("d/m/Y ", strtotime($task['create_time'])) ?></td>
+                            <td class="text-danger fw-bold"><?php echo date("d/m/Y ", strtotime($task['dead_line'])) ?></td>
                            
                            
                            <?php 

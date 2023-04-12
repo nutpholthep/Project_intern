@@ -79,7 +79,7 @@ $emp_result = mysqli_query($con, $sqlemp);
                 <div class="input-group-prepend">
                     <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
                 </div>
-                <input type="date" name="dead_line" id="" class="form-control col-lg-4" value="<?php echo $row['dead_line'] ?>" min="<?php echo date('Y-m-d'); ?>">
+                <input type="date" name="dead_line" id="" class="form-control col-lg-4" value="<?php echo $row['dead_line'] ?>" >
                 <div class="input-group-prepend">
                     <span class="input-group-text ">วันที่สร้างโปรเจค</span>
                 </div>
