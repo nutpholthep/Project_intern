@@ -6,8 +6,17 @@ $act_name = $_POST['act_name'];
 $idupdate = $_POST['act_update'];
 $update_by = $_POST['update_by'];
 $result_progessBar = $_POST['result_progessBar'];
+$prev_value = $_POST['prev_value'];
+
 // print_r($_POST);
 // exit;
+if($prev_value == $idupdate){
+    echo '<script>
+      alert("ไม่สามารถกรอกค่าเดิมได้");
+      history.back()
+    </script>';
+    // header("location:mainpage.php?idp=".$_POST['idp']);
+}else{
     $sql= "UPDATE activity SET activity_progress ='$idupdate'
     WHERE activity_id = '$i'";
     // echo $sql;
@@ -26,3 +35,6 @@ $result_progessBar = $_POST['result_progessBar'];
     }else{
         mysqli_error($con);
     }
+}
+
+   

@@ -7,24 +7,32 @@ $total = 0;
 $numTask = 0;
 $total_progress = 0;
 
-$sql = "SELECT p.project_id,p.project_name,p.create_time,p.dead_line,p.update_time,p.create_by,p.detail,
-p.update_by,p.owner,
-emp.emp_id,emp.emp_fname,emp.emp_lname,t.team_member
-FROM project_create AS p 
-LEFT join employees AS emp on emp.emp_id = p.owner
-LEFT JOIN team AS t on t.project_id = p.project_id 
-WHERE p.project_id = $id";
-$result = mysqli_query($con, $sql);
-$row = mysqli_fetch_assoc($result);
+//รายละเอียดโปรเจค
+// $sql = "SELECT p.project_id,p.project_name,p.create_time,p.dead_line,p.update_time,p.create_by,p.detail,
+// p.update_by,p.owner,
+// emp.emp_id,emp.emp_fname,emp.emp_lname,t.team_member
+// FROM project_create AS p 
+// LEFT join employees AS emp on emp.emp_id = p.owner OR emp.emp_id = create_by
+// LEFT JOIN team AS t on t.project_id = p.project_id 
+// WHERE p.project_id = $id";
+// $result = mysqli_query($con, $sql);
+// $row = mysqli_fetch_assoc($result);
 $order = 1;
 
-$sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,activity.activity_name,activity.activity_progress,project_create.detail,activity.activity_id,task.project_id,project_create.project_id
-FROM task
-RIGHT JOIN  project_create ON project_create.project_id = task.project_id
-RIGHT JOIN  activity ON task.task_id = activity.task_id 
-WHERE project_create.project_id =$id 
-ORDER BY task.task_id ";
+//task
+// $sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,activity.activity_name,activity.activity_progress,project_create.detail,activity.activity_id,task.project_id,project_create.project_id
+// FROM task
+// RIGHT JOIN  project_create ON project_create.project_id = task.project_id
+// RIGHT JOIN  activity ON task.task_id = activity.task_id 
+// WHERE project_create.project_id =$id 
+// ORDER BY task.task_id ";
 // echo $sql2;
+$sql2 = "SELECT DISTINCT project_create.project_name, task.task_name, task.task_id, activity.activity_name, activity.activity_progress, project_create.detail, activity.activity_id,project_create.project_id, task.dead_line
+FROM task
+RIGHT JOIN project_create ON project_create.project_id = task.project_id
+RIGHT JOIN activity ON task.task_id = activity.task_id 
+WHERE project_create.project_id = $id
+ORDER BY task.task_id";
 
 $result_task = mysqli_query($con, $sql2);
 // $task_query = mysqli_fetch_assoc($result_task);
@@ -32,14 +40,16 @@ $result_task = mysqli_query($con, $sql2);
 $IdTask;
 $taskName = "";
 
+// ตารางพนักงาน
 $emp = "SELECT t.team_member,t.project_id,emp.emp_fname,emp.emp_lname,task.task_id,task.task_name
 FROM team AS t
 LEFT JOIN employees AS emp ON emp.emp_id = t.team_member
-LEFT JOIN team_task AS ta ON ta.team_member =emp.emp_id
-LEFT JOIN task on task.task_id = ta.task_id
+LEFT JOIN task on task.task_id = t.task_id
 WHERE t.project_id=$id
 ORDER BY t.team_member ASC";
-
+// SELECT team_member 
+// FROM team
+// LEFT JOIN employees as emp on emp_code = team_member
 $result_emp = mysqli_query($con, $emp);
 // echo $emp;
 $a = "";
@@ -155,6 +165,9 @@ $a = "";
             var table = $('#progress').DataTable({
 
                 responsive: true,
+                "ordering": false,
+                // ที่ต้องใส่ordering เพราะถ้าให้เรียงแบบขึ้นแถวใหม่เป็นเลเวลต้องยกเลิกการเรียงลำดับ
+
                 "processing": true,
                 "autoWidth": true,
                 "columnDefs": [{
@@ -201,12 +214,17 @@ $a = "";
                 scrollY: '40vh',
                 scrollCollapse: true,
                 paging: false,
+                "ordering": false
             });
         });
     </script>
 
     <?php
     include 'nav.php';
+    $detail = detail($id);
+    $create_by = create_by($id);
+    $update_by = update_by($id);
+    $taskDeadLine = taskDeadLine($id);
 
     ?>
     <div class="container-fluid">
@@ -215,20 +233,20 @@ $a = "";
             <section class="row">
                 <!-- < ?php  $row = mysqli_fetch_assoc($result)  ?> -->
                 <div class="col-md-6 border">
-                    <h1 class="text-center">รายละเอียดโปรเจค <?php echo $row['project_name'] ?></h1>
+                    <h1 class="text-center">รายละเอียดโปรเจค <?php echo $detail['project_name'] ?></h1>
 
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">ชื่อโปรเจค</span>
                         </div>
-                        <input type="text" name="project_Name" class="form-control" placeholder="ป้อนชื่อโปรเจค" readonly value="<?php echo $row['project_name'] ?>">
+                        <input type="text" name="project_Name" class="form-control" placeholder="ป้อนชื่อโปรเจค" readonly value="<?php echo $detail['project_name'] ?>">
                     </div>
 
                     <div class="input-group mt-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">ชื่อเจ้าของโปรเจค</span>
                         </div>
-                        <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" readonly value="<?php echo $row['owner'] . "" . $row['emp_fname'] . "" . $row['emp_lname'] ?>">
+                        <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" readonly value="<?php echo $detail['owner'] . " " . $detail['emp_fname'] . " " . $detail['emp_lname'] ?>">
                     </div>
 
                     <div class="input-group mt-3">
@@ -236,7 +254,7 @@ $a = "";
                             <span class="input-group-text">คนที่สร้างโปรเจค</span>
                         </div>
 
-                        <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" readonly value="<?php echo $row['create_by'] . "" . $row['emp_fname'] ?>">
+                        <input type="text" name="project_Owner_fname" class="form-control" placeholder="ป้อนชื่อ" readonly value="<?php echo $create_by['create_by'] . " " . $create_by['emp_fname'] . " " . $create_by['emp_lname'] ?>">
 
                     </div>
 
@@ -247,7 +265,7 @@ $a = "";
                                     <span class="input-group-text ">วันที่โปรเจคต้องเสร็จ</span>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type="date" name="dead_line" id="" class="form-control " readonly value="<?php echo $row['dead_line'] ?>">
+                                    <input type="date" name="dead_line" id="" class="form-control " readonly value="<?php echo $detail['dead_line'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -258,7 +276,7 @@ $a = "";
                                     <span class="input-group-text ">วันที่สร้างโปรเจค</span>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type="timestam" name="c-time" id="" class="form-control " readonly value="<?php echo date("d/m/Y ", strtotime($row['create_time'])) ?>">
+                                    <input type="timestam" name="c-time" id="" class="form-control " readonly value="<?php echo date("d/m/Y ", strtotime($create_by['create_time'])) ?>">
 
                                 </div>
                             </div>
@@ -276,7 +294,7 @@ $a = "";
                                     <span class="input-group-text ">วันที่อัพเดทโปรเจค</span>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type="date" name="u_time" id="" class="form-control" readonly value="<?php echo $row['update_time'] ?>">
+                                    <input type="date" name="u_time" id="" class="form-control" readonly value="<?php echo $update_by['update_time'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -284,17 +302,17 @@ $a = "";
                         <div class="col-md-6">
                             <div class="input-group mt-3">
                                 <div class="input-group-prepend col-12 col-md-4">
-                                    <span class="input-group-text ">คนที่อัพเดทโปรเจคล่าสุด</span>
+                                    <span class="input-group-text ">คนที่อัพเดทโปรเจค</span>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input type="text" name="update_by" id="" class="form-control" readonly value="<?php echo $row['update_by'] . "" . $row['emp_fname'] . "" . $row['emp_lname'] ?>">
+                                    <input type="text" name="update_by" id="" class="form-control" readonly value="<?php echo $update_by['update_by'] . " " . $update_by['emp_fname'] . " " . $update_by['emp_lname'] ?>">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-floating mt-3">
-                        <textarea class="form-control" placeholder="รายละเอียดงานโปรเจค" id="floatingTextarea" name="detail" readonly><?php echo $row['detail'] ?></textarea>
+                        <textarea class="form-control" placeholder="รายละเอียดงานโปรเจค" id="floatingTextarea" name="detail" readonly><?php echo $detail['detail'] ?></textarea>
                         <label for="floatingTextarea">รายละเอียดงานโปรเจค</label>
                     </div>
 
@@ -303,11 +321,11 @@ $a = "";
                     </div> -->
 
                     <div class="d-flex justify-content-end mb-3 ">
-                        <a href="#" id="open_edit" class="btn btn-warning mt-3 " data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $row['project_id'] ?>">แก้ไขรายละเอียด <span class="lnr lnr-pencil fw-bold"></span></a>
+                        <a href="#" id="open_edit" class="btn btn-warning mt-3 " data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $id ?>">แก้ไขรายละเอียด <span class="lnr lnr-pencil fw-bold"></span></a>
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <a href="deleteProject.php?iddel=<?php echo $row['project_id'] ?>" class="btn btn-danger" onclick="return confirm('ต้องการลบโปรเจคนี้จริงหรือไม่')">ลบโปรเจค<span class="lnr lnr-trash  "></span>
+                        <a href="deleteProject.php?iddel=<?php echo $id ?>" class="btn btn-danger" onclick="return confirm('ต้องการลบโปรเจคนี้จริงหรือไม่')">ลบโปรเจค<span class="lnr lnr-trash  "></span>
                             </svg></a>
                     </div>
                     <div class="mt-3">
@@ -321,17 +339,22 @@ $a = "";
                             </thead>
                             <tbody>
                                 <?php
+                                $d = strtotime('now');
+                                // echo $st = date('d/m/Y',$d);
+                                $deadLine = strtotime($taskDeadLine['dead_line']);
+                                echo $st2 = date('d/m/Y', $deadLine);
                                 foreach ($result_emp as $tem) { ?>
                                     <?php
                                     // ซ่อนชื่อซ้ำ
                                     if ($a == $tem['emp_fname'] . "" . $tem['emp_lname']) {
                                         $b = "";
                                     } else {
+                                        $b = '';
                                         $b = $tem['emp_fname'] . "" . $tem['emp_lname'];
                                     }
                                     ?>
                                     <tr>
-                                        <td><?php echo $tem['team_member'] ?></td>
+                                        <td><?php echo $b ?></td>
                                         <td><?php echo $b; ?></td>
                                         <td>
                                             <ul>
@@ -353,7 +376,7 @@ $a = "";
                 <div class=" mt-3 col-md-6">
                     <h2 class="text-center">รายละเอียดงาน</h2>
                     <div>
-                        <table class=" table table-light table-striped mt-2 display responsive nowrap" id="progress">
+                        <table class=" table table-light  mt-2 display responsive nowrap" id="progress">
                             <thead class="table-dark">
                                 <tr>
                                     <th>ลำดับที่</th>
@@ -367,65 +390,59 @@ $a = "";
 
                             <tbody>
                                 <?php while ($task = mysqli_fetch_assoc($result_task)) { ?>
-                                    <tr>
-                                        <td class="text-end"><?php echo $order++ ?></td>
-                                        <?php
-                                        // เงื่อนไขคือ เก็บproject_nameไว้ในตัวแปร a ลูปแรกที่เจอ project_name
-                                        // เมื่อเข้าลูปที่ 2 ถ้าเจอproject_name ชื่อเดิมจะมีค่าเป็นจะให้เป็นค่าว่าง
-                                        if ($taskName == $task['task_name']) {
-                                            $tasknew = "";
-                                        } else {
-                                            $tasknew = $task['task_name'];
-                                        }
-                                        ?>
-                                        <td class="table-light">
-                                            <h5><?php echo $tasknew ?></h5>
-                                        </td>
-                                        <td>
-                                       <?= $task["activity_name"]; ?>
-                                        </td>
-                                        <td>
 
-                                            <?php  if($task['activity_progress']==100){
-                                                 echo '';
-     
-                                                echo' <a href="#" class="btn d-grid bg-warning  justify-content-end    open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx=" '.$task["activity_id"].' "><span class="lnr lnr-pencil fw-bold pe-3"></span></a></td>';
-                                            }else{
-                                                echo ' <a href="#" class=" btn btn-success open_update " data-bs-toggle="modal" idx="'.$task["activity_id"].'" data-bs-target="#add_update"><span class="lnr lnr-sync fw-bold"></span>
-                                                </a>';
-    
-                                               echo' <a href="#" class="btn bg-warning open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx=" '.$task["activity_id"].' "><span class="lnr lnr-pencil fw-bold"></span></a></td>';
-                                            }
-                                           
-
-                                        ?>
-
-                                        <td><?php echo $task['activity_progress'] ?></td>
-
-                                        <!-- Query คำนวณ ProgressBar -->
-                                        <?php
-                                            $progress = progress_Bar($task['task_id']);
-
-                                            if($prev == $progress){
-                                                echo '<td>0</td>';
-                                            }else{
-                                                echo '<td> '.$progress.'</td>';
-                                            }
-                                            $prev=$progress;
-                                             ?>
-                                    </tr>
 
                                     <?php
-                                    //   ความคืบหน้าโปรเจคทั้งหมด
-                                //    echo $task['activity_id'];
-                                echo $id;
-                                  echo $progress_proj = Total_progress($id);
-                                         } 
+                                    if ($taskName != $task['task_name']) {
+                                        echo '<tr class="table-secondary">';
+                                        echo '<td class="text-end">' . $order++ . '</td>';
+                                        echo '<td><h5>' . $task["task_name"] . '</h5></td>';
+                                        echo '<td></td>
+                                            <td>' . $task['dead_line'] . '</td>
+                                            <td>0</td>';
+
+                                        $progress = progress_Bar($task['task_id']);
+                                        if ($prev == $progress) {
+                                            echo '<td>0</td>';
+                                        } else {
+                                            echo '<td> ' . $progress . '</td>';
+                                        }
+                                        $prev = $progress;
+                                        echo '</tr>';
+                                    } ?>
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><?= $task["activity_name"]; ?></td>
+                                        <?php if ($task['activity_progress'] == 100) {
+                                            echo '<td class="text-success">
+                                                 <p class="fw-bolder text-uppercase">Complete</p>';
+                                            echo '</td>';
+                                        } else {
+                                            echo '<td> <a href="#" class=" btn btn-success open_update " data-bs-toggle="modal" idx="' . $task["activity_id"] . '" data-bs-target="#add_update"><span class="lnr lnr-sync fw-bold"></span>
+                                                </a>';
+
+                                            echo ' <a href="#" class="btn bg-warning open_Edact" data-bs-target="#edit_activity" data-bs-toggle="modal" idx=" ' . $task["activity_id"] . ' "><span class="lnr lnr-pencil fw-bold"></span></a></td>';
+                                        }
+
+
                                         ?>
+                                        <td><?php echo $task['activity_progress'] ?></td>
+                                        <td>0</td>
+                                    </tr>
+                                <?php
+                                    //   ความคืบหน้าโปรเจคทั้งหมด
+                                    //    echo $task['activity_id'];
+                                    $taskName = $task['task_name'];
+
+                                    $progress_proj = Total_progress($id);
+                                }
+                                ?>
 
                                 <?php
                                 //ตัวแปรที่เก็บค่าสูตรคำนวณโดยวิธีคิด จำนวนActtivityทั้งหมด*100/จำนวนแถวทั้งหมด
-                                if ($progress_proj== 0) { ?>
+                                if ($progress_proj == 0) { ?>
 
                                     <div id="detailProgress">
                                         <h3 class="text-decoration-underline badge bg-secondary text-wrap">ความคืบหน้าของโปรเจคโดยรวม</h3>
@@ -435,7 +452,7 @@ $a = "";
                                         </div>
                                     </div>
                                 <?php  } else {
-                                   
+
                                     //  คำสั่งQueryคำนวณ
                                 ?>
                                     <div id="detailProgress">

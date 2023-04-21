@@ -46,6 +46,7 @@ $emp_query = mysqli_query($con,$empsql);
           <?php while ($lact = mysqli_fetch_assoc($act_query)) { ?>
             <input type="hidden" name="act_id" value="<?php echo $lact['activity_id'] ?>">
             <input type="hidden" name="act_name" value="<?php echo $lact['activity_name'] ?>">
+            <input type="hidden" name="prev_value" value="<?php echo $lact['activity_progress'] ?>">
             
            
             <tr>
@@ -70,14 +71,8 @@ $emp_query = mysqli_query($con,$empsql);
     </select>
   </div>
   <div class="modal-footer">
-  <?php 
-            if($lact['activity_progress']==100){?>
-              <button type="summit" class="btn btn-success disabled" >บันทึกข้อมูล</button>
-             <?php }else{ ?>
-
                <button type="summit" class="btn btn-success" >บันทึกข้อมูล</button>
-          <?php }?>
-            
+
   </div>
 </form>
 <?php } ?>

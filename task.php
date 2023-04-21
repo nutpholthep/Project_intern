@@ -107,7 +107,7 @@ $emp_query = mysqli_query($con, $emp_sql);
                     <form action="taskquery.php" method="post">
                         <div class="input-group mt-3 ">
                             <label class="input-group-text">ชื่อโปรเจค</label>
-                            <select name="taskID" class="form-control taskselect " required>
+                            <select name="project_id" class="form-control taskselect " required>
                                 <option value="">-เลือกหัวข้อโปรเจค-</option>
                                 <?php foreach ($result as $results) { ?>
                                     <option value="<?php echo $results["project_id"]; ?>">
@@ -123,7 +123,7 @@ $emp_query = mysqli_query($con, $emp_sql);
                                 </span>
                             </div>
                             <input type="text" name="addTask" class="form-control" placeholder="ป้อนชื่องาน" autocomplete="off">
-                            <select name="task_emp" class=" task_emp " required>
+                            <select name="task_emp[]" class=" task_emp " multiple="multiple"  required>
                                 <option value="">-เลือกผู้รับผิดชอบ</option>
                                 <?php foreach ($emp_query as $results) { ?>
                                     <option value="<?php echo $results["emp_id"]; ?>">
@@ -176,7 +176,7 @@ $emp_query = mysqli_query($con, $emp_sql);
                                     <i class='bi bi-plus-circle-fill'></i>
                                         เพิ่มกิจกรรมย่อย
                                         </a></td>";
-                                echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick=' return confirm(\'ต้องการลบข้อมูลหรือไม่??\')'><i class='bi bi-trash'></i>ลบงาน</a></td>";
+                                echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick='return confirm(\"ต้องการลบข้อมูลหรือไม่??\")'><i class='bi bi-trash'></i>ลบงาน</a></td>";
                                 echo "</tr>";
                             } else {
                                 echo '<td></td>';

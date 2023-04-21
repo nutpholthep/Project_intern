@@ -11,8 +11,8 @@ $createby = $_POST['createBy']; //สร้างโดย
 $team = $_POST['team']; //สมาชิกทีม
 
 //เลือกลูกทีม
-// print_r($_POST);
-// exit;
+print_r($_POST);
+exit;
 
 $sql = " INSERT INTO project_create (project_name,owner,detail,dead_line,create_by) VALUE ('$pname','$ownerId','$detail','$date','$createby')";
 
