@@ -1,5 +1,6 @@
 <?php
 require('dbconnect.php');
+require('func.php');
 ?>
 
 <!DOCTYPE html>
@@ -25,38 +26,29 @@ require('dbconnect.php');
 </head>
 
 <body>
-
+<?php echo $inbar=inBar(15);
+print_r($inbar);
+// echo json_encode($data);?>
     <?php
     require 'nav.php';
     // $sql = "SELECT *,(activity_progress *100)
     // FROM activity
     // WHERE activity_id =20";
     // $query = mysqli_query($con, $sql);
-$sql = "SELECT * FROM project_create";
+$sql = "SELECT project_id FROM project_create";
 $result =mysqli_query($con,$sql);
 
 
     while ($task = mysqli_fetch_assoc($result)) {  
-     echo   $id =$task['project_id'];
-$sql2="SELECT p.project_name,t.project_id,t.task_id,a.activity_id,a.activity_progress,a.activity_name,SUM(a.activity_progress),COUNT(a.activity_id),((SUM(a.activity_progress)*100)/(COUNT(a.activity_id)*100))
-FROM project_create AS p
-LEFT JOIN task as t on t.project_id = p.project_id
-LEFT JOIN activity AS a on a.task_id = t.task_id
-WHERE p.project_id= $id";
-    
-    $query = mysqli_query($con, $sql2);
+       $id =$task['project_id'];
+
+$query =barChart($id);
     foreach ($query as $value) {
         $label[] = $value['project_name'];
-        $data[] = $value['((SUM(a.activity_progress)*100)/(COUNT(a.activity_id)*100))'];
+        $data[] = $value['total'];
     }
 
 }
-//     $sum = 100;
-//  foreach($data as $f){
-//     $sum = $f * $sum;
-//  }
-
-//  print_r($sum);
  
     ?>
     <div class="container">
@@ -65,8 +57,8 @@ WHERE p.project_id= $id";
             <h5 class="card-header ">
                 <div class="text-center">
                     <p>ภาพรวมโปรเจค</p>
-                    <button id="pie"class="btn btn-primary">ChangePie</button>
-                    <button id="bar" class="btn ">ChangeBar</button>
+                    <button id="bar" class="btn btn-primary">ChangeBar</button>
+                    <button id="pie"class="btn ">ChangePie</button>
                 </div>
             </h5>
             <div class="card-body">
@@ -76,9 +68,6 @@ WHERE p.project_id= $id";
             </div>
         </div>
     </div>
-
-
-
 
     <script>
         //setup ข้อมูลกราฟ
@@ -101,7 +90,7 @@ WHERE p.project_id= $id";
 
         //config รูปแบบกราฟ
         const config = {
-            type: 'pie',
+            type: 'bar',
             data,
             options: {
                 plugins: {
@@ -126,6 +115,7 @@ WHERE p.project_id= $id";
         };
         window.addEventListener('load', () => {
             // const ctx = document.getElementById('myChart').getContext('2d');
+            
             const bar = document.getElementById('bar');
             const pie = document.getElementById('pie');
 
@@ -144,7 +134,9 @@ WHERE p.project_id= $id";
                 mychart.update()
                 bar.classList.add('btn-primary')
                 pie.classList.remove('btn-primary')
-
+                // < ?php inBar(55) ?>
+                // data.datasets.label('test')
+                mychart.data.datasets[0].data = data;
             }
 
             function changePie() {

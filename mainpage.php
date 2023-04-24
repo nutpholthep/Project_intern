@@ -7,26 +7,8 @@ $total = 0;
 $numTask = 0;
 $total_progress = 0;
 
-//รายละเอียดโปรเจค
-// $sql = "SELECT p.project_id,p.project_name,p.create_time,p.dead_line,p.update_time,p.create_by,p.detail,
-// p.update_by,p.owner,
-// emp.emp_id,emp.emp_fname,emp.emp_lname,t.team_member
-// FROM project_create AS p 
-// LEFT join employees AS emp on emp.emp_id = p.owner OR emp.emp_id = create_by
-// LEFT JOIN team AS t on t.project_id = p.project_id 
-// WHERE p.project_id = $id";
-// $result = mysqli_query($con, $sql);
-// $row = mysqli_fetch_assoc($result);
 $order = 1;
 
-//task
-// $sql2 = "SELECT DISTINCT project_create.project_name,task.task_name,task.task_id,activity.activity_name,activity.activity_progress,project_create.detail,activity.activity_id,task.project_id,project_create.project_id
-// FROM task
-// RIGHT JOIN  project_create ON project_create.project_id = task.project_id
-// RIGHT JOIN  activity ON task.task_id = activity.task_id 
-// WHERE project_create.project_id =$id 
-// ORDER BY task.task_id ";
-// echo $sql2;
 $sql2 = "SELECT DISTINCT project_create.project_name, task.task_name, task.task_id, activity.activity_name, activity.activity_progress, project_create.detail, activity.activity_id,project_create.project_id, task.dead_line
 FROM task
 RIGHT JOIN project_create ON project_create.project_id = task.project_id
@@ -172,29 +154,7 @@ $a = "";
                 "autoWidth": true,
                 "columnDefs": [{
                         "targets": 4,
-                        "render": function(data, type, row, meta) {
-                            if (data <= 99) {
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-warning text-dark fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';
-                            } else {
-                                return '<div class="progress">' +
-                                    '<div class=" progress-bar progress-bar-striped progress-bar-animated bg-success  fw-bold" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                    '</div>' +
-                                    '</div>';
-                            }
-                        }
-
-                    }, {
-                        "targets": 5,
-                        "render": function(data, type, row, meta) {
-                            return '<div class="progress">' +
-                                '<div class="progress-bar bg-success" role="progressbar" style="width: ' + data + '%;" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100">' + data + '%' +
-                                '</div>' +
-                                '</div>';
-                        }
-                    },
+                },
                     {
                         responsivePriority: 1,
                         targets: 2
@@ -225,6 +185,7 @@ $a = "";
     $create_by = create_by($id);
     $update_by = update_by($id);
     $taskDeadLine = taskDeadLine($id);
+    
 
     ?>
     <div class="container-fluid">
@@ -316,9 +277,7 @@ $a = "";
                         <label for="floatingTextarea">รายละเอียดงานโปรเจค</label>
                     </div>
 
-                    <!-- <div class="text-end mt-3">
-                        <a href="#" class=" btn btn-info open_memberTask" data-bs-toggle="modal" idx="< ?php echo $id ?>" data-bs-target="#add_memberTask">เพิ่มงานที่รับผิดชอบ</a>
-                    </div> -->
+                    
 
                     <div class="d-flex justify-content-end mb-3 ">
                         <a href="#" id="open_edit" class="btn btn-warning mt-3 " data-bs-target="#edit_page" data-bs-toggle="modal" idx="<?php echo $id ?>">แก้ไขรายละเอียด <span class="lnr lnr-pencil fw-bold"></span></a>
@@ -339,10 +298,7 @@ $a = "";
                             </thead>
                             <tbody>
                                 <?php
-                                $d = strtotime('now');
-                                // echo $st = date('d/m/Y',$d);
-                                $deadLine = strtotime($taskDeadLine['dead_line']);
-                                echo $st2 = date('d/m/Y', $deadLine);
+                                
                                 foreach ($result_emp as $tem) { ?>
                                     <?php
                                     // ซ่อนชื่อซ้ำ
@@ -399,13 +355,13 @@ $a = "";
                                         echo '<td><h5>' . $task["task_name"] . '</h5></td>';
                                         echo '<td></td>
                                             <td>' . $task['dead_line'] . '</td>
-                                            <td>0</td>';
+                                            <td></td>';
 
                                         $progress = progress_Bar($task['task_id']);
                                         if ($prev == $progress) {
-                                            echo '<td>0</td>';
+                                            echo '<td></td>';
                                         } else {
-                                            echo '<td> ' . $progress . '</td>';
+                                            echo '<td> ' . $display =perProgess($progress,$dateNow,$deadLine) . '</td>';
                                         }
                                         $prev = $progress;
                                         echo '</tr>';
@@ -416,9 +372,19 @@ $a = "";
                                         <td></td>
                                         <td><?= $task["activity_name"]; ?></td>
                                         <?php if ($task['activity_progress'] == 100) {
-                                            echo '<td class="text-success">
-                                                 <p class="fw-bolder text-uppercase">Complete</p>';
-                                            echo '</td>';
+                                            $dateNow = strtotime('now');
+                                            $deadLine = strtotime($taskDeadLine['dead_line']);
+                                            echo $st2 = date('d/m/Y', $deadLine);
+                                            if($dateNow<=$deadLine){
+                                                echo '<td class="text-success">
+                                                <p class="fw-bolder text-uppercase">Complete</p>';
+                                           echo '</td>';
+                                            }else{
+                                                echo '<td class="text-danger">
+                                                <p class="fw-bolder text-uppercase">Overtime</p>';
+                                           echo '</td>';
+                                            }
+                                          
                                         } else {
                                             echo '<td> <a href="#" class=" btn btn-success open_update " data-bs-toggle="modal" idx="' . $task["activity_id"] . '" data-bs-target="#add_update"><span class="lnr lnr-sync fw-bold"></span>
                                                 </a>';
@@ -428,8 +394,8 @@ $a = "";
 
 
                                         ?>
-                                        <td><?php echo $task['activity_progress'] ?></td>
-                                        <td>0</td>
+                                        <td><?php echo $display =perProgess($task['activity_progress'],$dateNow,$deadLine);  ?></td>
+                                        <td></td>
                                     </tr>
                                 <?php
                                     //   ความคืบหน้าโปรเจคทั้งหมด
