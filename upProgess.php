@@ -29,7 +29,7 @@ if($prev_value == $idupdate){
         $hisQuery = mysqli_query($con,$history);
 
         if($hisQuery){
- header("location:mainpage.php?idp=".$_POST['idp']);
+ header("location:tem_mainpage.php?idp=".$_POST['idp']);
 
         }
     }else{

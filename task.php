@@ -97,8 +97,8 @@ $emp_query = mysqli_query($con, $emp_sql);
     <?php
     include 'nav.php';
 
-    ?>
-    <div class="container-fluid">
+    
+   echo' <div class="container-fluid">
 
         <div class="container  shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
             <div class="  mt-3">
@@ -108,13 +108,13 @@ $emp_query = mysqli_query($con, $emp_sql);
                         <div class="input-group mt-3 ">
                             <label class="input-group-text">ชื่อโปรเจค</label>
                             <select name="project_id" class="form-control taskselect " required>
-                                <option value="">-เลือกหัวข้อโปรเจค-</option>
-                                <?php foreach ($result as $results) { ?>
-                                    <option value="<?php echo $results["project_id"]; ?>">
-                                        <?php echo $results["project_name"]; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
+                                <option value="">-เลือกหัวข้อโปรเจค-</option>';
+                                 foreach ($result as $results) { 
+                                   echo' <option value=" '.$results["project_id"].'">
+                                         '.$results["project_name"].'
+                                    </option>';
+                                 } 
+                           echo' </select>
                         </div>
                         <div class="input-group mt-3 mb-2">
                             <div class="input-group-prepend">
@@ -124,15 +124,15 @@ $emp_query = mysqli_query($con, $emp_sql);
                             </div>
                             <input type="text" name="addTask" class="form-control" placeholder="ป้อนชื่องาน" autocomplete="off">
                             <select name="task_emp[]" class=" task_emp " multiple="multiple"  required>
-                                <option value="">-เลือกผู้รับผิดชอบ</option>
-                                <?php foreach ($emp_query as $results) { ?>
-                                    <option value="<?php echo $results["emp_id"]; ?>">
-                                        <?php echo $results['emp_id'] . $results["emp_fname"] . $results["emp_lname"]; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
+                                <option value="">-เลือกผู้รับผิดชอบ</option>';
+                                 foreach ($emp_query as $results) { 
+                                   echo'<option value=" '.$results["emp_id"]. '">
+                                       ' .$results["emp_id"].'  '.$results["emp_fname"].'  '.$results["emp_lname"].' 
+                                    </option>';
+                                 } 
+                            echo '</select>
                         </div>
-                        <input type="date" name="datetask" id="" class="form-control" min="<?php echo date('Y-m-d'); ?>">
+                        <input type="date" name="datetask" id="" class="form-control" min="<?php echo date("Y-m-d"); ">
                         <div class="m-3 d-flex justify-content-end">
                             <button class="btn btn-success btn-lg">เพิ่มงาน</button>
                         </div>
@@ -150,8 +150,8 @@ $emp_query = mysqli_query($con, $emp_sql);
                         </tr>
 
                     </thead>
-                    <tbody>
-                        <?php while ($task = mysqli_fetch_assoc($task_query)) {
+                    <tbody>';
+                        while ($task = mysqli_fetch_assoc($task_query)) {
 
 
                             if ($a != $task['project_name']) {
@@ -185,8 +185,8 @@ $emp_query = mysqli_query($con, $emp_sql);
 
 
                             $a = $task['project_name'];
-                        } ?>
-                    </tbody>
+                        } 
+                   echo' </tbody>
                 </table>
                 </form>
             </div>
@@ -209,8 +209,15 @@ $emp_query = mysqli_query($con, $emp_sql);
             </div>
         </div>
 
-    </div>
-
+    </div>';
+    ?>
+// <!-- <script>
+//     let btn = document.getElementById('top');
+//     btn.addEventListener('click',()=>{
+//         document.body.scrollTop = 0;
+//   document.documentElement.scrollTop = 0;
+//     })
+// </script> -->
 
 </body>
 

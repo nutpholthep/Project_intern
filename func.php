@@ -113,10 +113,6 @@ function barChart($id){
     include('dbconnect.php');
     $sql = "SELECT 
     p.project_name,
-    t.project_id,
-    t.task_id,
-    a.activity_id,
-    a.activity_progress,
     SUM(a.activity_progress) as bar,
     COUNT(a.activity_id),
     ((SUM(a.activity_progress)*100)/(COUNT(a.activity_id)*100)) AS total
@@ -136,10 +132,7 @@ function inBar($id){
     include('dbconnect.php');
     $sql = "SELECT 
     p.project_name,
-    t.project_id,
-    t.task_id,
-    a.activity_id,
-    a.activity_progress,
+    p.status,
     SUM(a.activity_progress) as bar,
     COUNT(a.activity_id),
     ((SUM(a.activity_progress)*100)/(COUNT(a.activity_id)*100)) AS total
@@ -148,13 +141,10 @@ FROM
     LEFT JOIN task AS t ON t.project_id = p.project_id
     LEFT JOIN activity AS a ON a.task_id = t.task_id
 WHERE 
-    p.project_id = $id 
+    p.project_id = $id AND p.status =1
 HAVING 
     total <> 100";
-     $result = $con->query($sql);
-    foreach($result as $val){
-        return $data[]=$val['total'];
-    }
+  return $result = $con->query($sql);
 }
 
 function fillter($id){
@@ -188,6 +178,7 @@ function fillterInComplete($id){
     include('dbconnect.php');
     $sql = "SELECT 
     p.project_name,
+    p.status,
     t.project_id,
     t.task_id,
     a.activity_id,
@@ -202,7 +193,7 @@ FROM
 WHERE 
     p.project_id = $id 
 HAVING 
-    total <> 100";
+    total <> 100 AND p.status =1 OR total =0";
 
 $result = $con->query($sql);
 
@@ -225,6 +216,19 @@ function taskDeadLine($id){
     foreach($result as $val){
         return $val;
     }
+
+}
+
+function countOwner(){
+    include('dbconnect.php');
+    $sql ="SELECT emp.emp_fname,emp.emp_lname,COUNT(p.owner) as project_count
+    FROM project_create AS p
+    LEFT JOIN employees AS emp ON emp.emp_id = p.owner
+    GROUP BY p.owner
+    ORDER BY project_count DESC
+    LIMIT 5";
+
+return $result = $con->query($sql);
 
 }
 

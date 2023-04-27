@@ -19,13 +19,13 @@
                 <div class="collapse navbar-collapse" id="Nav_bar">
                     <ul class="navbar-nav ">
                         <li class="nav-item ">
-                            <a href="index.php" class="nav-link  actb">Create Project</a>
+                            <a href="tem_index.php" class="nav-link  actb">Create Project</a>
                         </li>
                         <li class="nav-item">
-                            <a href="task.php" class="nav-link">Task</a>
+                            <a href="tem_task.php" class="nav-link">Task</a>
                         </li>
                         <li class="nav-item">
-                            <a href="display.php" class="nav-link">Display</a>
+                            <a href="tem_display.php" class="nav-link">Display</a>
                         </li>
                         <li class="nav-item">
                             <a href="report.php" class="nav-link">Report</a>

@@ -354,7 +354,7 @@ $a = "";
                                         echo '<td class="text-end">' . $order++ . '</td>';
                                         echo '<td><h5>' . $task["task_name"] . '</h5></td>';
                                         echo '<td></td>
-                                            <td>' . $task['dead_line'] . '</td>
+                                            <td></td>
                                             <td></td>';
 
                                         $progress = progress_Bar($task['task_id']);
@@ -374,7 +374,7 @@ $a = "";
                                         <?php if ($task['activity_progress'] == 100) {
                                             $dateNow = strtotime('now');
                                             $deadLine = strtotime($taskDeadLine['dead_line']);
-                                            echo $st2 = date('d/m/Y', $deadLine);
+                                             $st2 = date('d/m/Y', $deadLine);
                                             if($dateNow<=$deadLine){
                                                 echo '<td class="text-success">
                                                 <p class="fw-bolder text-uppercase">Complete</p>';

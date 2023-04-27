@@ -269,3 +269,5 @@ $color = 'btn-success';
             ?>
         </div>
     </div>
+</body>
+</html>
