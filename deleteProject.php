@@ -13,7 +13,7 @@ $result = mysqli_query($con,$sql);
 
 if($result){
   
-   header("location:display.php");
+   header("location:tem_display.php");
 }else{
     mysqli_error($con);
 }

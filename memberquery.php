@@ -10,7 +10,7 @@ $result =mysqli_query($con,$sql);
 
 
 if($result){
-    header('location:mainpage.php?idp='.$_POST['idedit']); 
+    header('location:tem_mainpage.php?idp='.$_POST['idedit']); 
 
 }
 else{

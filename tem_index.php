@@ -39,7 +39,9 @@ $_APPLICATION_VERSION="1.0.0.0";
 
 
 //---------------------------------------------------------------------
-$EMP_CODE=$_SESSION["user"];//"4501177";
+// $EMP_CODE=$_SESSION["user"];//"4501177";
+$EMP_CODE=112233;//"4501177";
+
 // $getmogile=trim(file_get_contents("http://webkm/restful/RestProvides.php?id=".$EMP_CODE), "\xEF\xBB\xBF");
 // $converjson=json_decode($getmogile, TRUE);
 
@@ -103,6 +105,7 @@ $_ARRAUTH["ADD"]=1;
             <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
     
                 <form action="addProject.php" method="post" class="needs-validation ">
+                <input type="hidden" name="createBy" value="'.$EMP_CODE.'">
                     <h1 class="text-center">สร้างโปรเจค</h1>
                     <div class="input-group">
                         <div class="input-group-prepend">

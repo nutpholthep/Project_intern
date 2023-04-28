@@ -21,7 +21,7 @@ $history_query = mysqli_query($con,$history_edit);
 // exit;
 
 if($history_query){
-    header("location:mainpage.php?idp=".$proj_id);
+    header("location:tem_mainpage.php?idp=".$proj_id);
 }
  }else{
      mysqli_error($con);

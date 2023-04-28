@@ -30,6 +30,7 @@ $emp_query = mysqli_query($con,$empsql);
 </script>
 <div class="container shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
           <form action="editActivity.php" method="post">
+         
               <h1>แก้ไขรายละเอียดกิจกรรมย่อย</h1>              
                 <table class="table table-striped table-warning mt-2 ">
                     <thead class="thead-dark">
@@ -39,14 +40,14 @@ $emp_query = mysqli_query($con,$empsql);
                     </thead>
                     <tbody >
                       <?php while($lact=mysqli_fetch_assoc($act_query)){ ?>
-                        <input type="hidden" name="act_id" value="<?php echo $lact['activity_id']?>">
+                        <input type="hidden" name="actid" value="<?php echo $lact['activity_id']?>">
                         <input type="hidden" name="task_id" value="<?php echo $lact['task_id']?>">
-                        <input type="hidden" name="pro_id" value="<?php echo $lact['project_id']?>">
-                           
+                        <input type="hidden" name="id" value="<?php echo $lact['project_id']?>">
+                       
                             <tr>
                         
                         <td><input type="text" class="form-control" value="<?php echo $lact['activity_name']?>" name="edit_act"></td>
-                        <td> <a href="deletetask.php?idtask=<?php echo $task['activity_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
+                        <td> <a href="deleteactivity.php?idact=<?php echo $lact['activity_id']; ?>&idp=<?php echo $lact['project_id']?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
                                             <i class="bi bi-trash"></i>ลบงาน</a></td>
                        </tr> 
 

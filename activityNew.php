@@ -3,7 +3,7 @@ require('dbconnect.php');
 $act = "SELECT task.task_id,activity.activity_id,activity.activity_name
 FROM task
 left JOIN activity ON task.task_id = activity.task_id
-WHERE task.task_id = ".$_POST['id'];
+WHERE  activity.status <> 0 AND task.task_id = ".$_POST['id'];
 $act_query = mysqli_query($con,$act);
 $actN =1;
 
@@ -38,14 +38,16 @@ $actN =1;
                     <tbody >
                         <?php while($lact=mysqli_fetch_assoc($act_query)){ ?>
                             <input type="hidden" name="task_act" value="<?php echo $lact['task_id']?>">
-                           
-                            <tr>
+                            <?php if(isset($lact['activity_id'])) { ?>
+                            <tr> 
                         <td><?php echo $actN++ ?></td>
                         <td><?php echo $lact['activity_name']?></td>
+                       
+                        <td><a href="deleteActivity.php?idact=<?php echo $lact['activity_id']?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
+                    <i class="bi bi-trash"></i>ลบงาน</a></td>
+                    </tr> 
+                      <?php  } ?>
                         
-                        <td> <a href="deletetask.php?idtask=<?php echo $task['activity_id']; ?>" class="btn btn-danger" onclick=" return confirm('ต้องการลบข้อมูลหรือไม่??')">
-                                            <i class="bi bi-trash"></i>ลบงาน</a></td>
-                       </tr> 
 
 <?php } ?>
 

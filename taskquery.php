@@ -21,7 +21,7 @@ LEFT JOIN task on task.project_id = p.project_id
 WHERE p.project_id =$project_id";
 $result2=mysqli_query($con,$que);
 $t=mysqli_fetch_assoc($result2);
- $maxID=$t['MAX(task.task_id)']; 
+$maxID=$t['MAX(task.task_id)']; 
 
 
 if($result2){
@@ -29,7 +29,7 @@ if($result2){
  foreach($task_emp as $teamNew){
      // echo $teamNew;
      $sql2 = "INSERT INTO team (team_member,project_id,task_id)
-     VALUES ('$teamNew',$project_id,$maxID)"; 
+     VALUES ($teamNew,$project_id,$maxID)"; 
      // echo $sql2;
      $result3=mysqli_query($con,$sql2);
  }

@@ -1,4 +1,6 @@
 <?php
+
+//progressBar
 function perProgess($data,$dateNow,$deadLine){
 
     if($dateNow<=$deadLine){
@@ -15,6 +17,7 @@ function perProgess($data,$dateNow,$deadLine){
        
 }
 
+//สูตรคำนวณProgressBar
 function progress_Bar($id)
 {
     include('dbconnect.php');
@@ -28,6 +31,7 @@ function progress_Bar($id)
         return  $val = intval(($val['bar'] * 100) / ($val['COUNT(activity_progress)'] * 100));
     }
 }
+//สูตรคำนวณProgressBarโดยรวม
 function Total_progress($id)
 {
     include('dbconnect.php');
@@ -65,11 +69,8 @@ function projectId(){
         }
         return $projectIds;
 }
-//  echo $showdata = projectId();
-//   print_r($showdata) ;
- 
-// echo $showme = progress_Bar(55);
 
+// แสดงรายละเอียดโปรเจค
 function detail($id){
     include('dbconnect.php');
     $sql ="SELECT  p.project_name,p.dead_line,p.owner,p.detail,emp.emp_fname,emp.emp_lname
@@ -83,6 +84,8 @@ function detail($id){
         return $val;
     }
 }
+
+// แสดงรายละเอียดคนสร้าง
 function create_by($id){
     include('dbconnect.php');
     $sql ="SELECT  emp.emp_fname,emp.emp_lname,p.create_by,p.create_time
@@ -96,6 +99,7 @@ function create_by($id){
         return $val;
     }
 }
+// แสดงรายละเอียดอัพเดทโดยใคร
 function update_by($id){
     include('dbconnect.php');
     $sql ="SELECT  emp.emp_fname,emp.emp_lname,p.update_by,p.update_time
@@ -109,6 +113,7 @@ function update_by($id){
         return $val;
     }
 }
+
 function barChart($id){
     include('dbconnect.php');
     $sql = "SELECT 
@@ -147,6 +152,7 @@ HAVING
   return $result = $con->query($sql);
 }
 
+// Fillterโปรเจค100%
 function fillter($id){
     include('dbconnect.php');
     $sql = "SELECT 
@@ -163,7 +169,7 @@ FROM
     LEFT JOIN task AS t ON t.project_id = p.project_id
     LEFT JOIN activity AS a ON a.task_id = t.task_id
 WHERE 
-    p.project_id = $id 
+    p.project_id = $id AND p.status =1
 HAVING 
     total = 100";
 
@@ -174,6 +180,8 @@ foreach($result as $val){
     return intval($val['total']);
 }
 }
+
+// Fillterที่ไม่สำเร็จ
 function fillterInComplete($id){
     include('dbconnect.php');
     $sql = "SELECT 
@@ -191,9 +199,9 @@ FROM
     LEFT JOIN task AS t ON t.project_id = p.project_id
     LEFT JOIN activity AS a ON a.task_id = t.task_id
 WHERE 
-    p.project_id = $id 
+    p.project_id = $id AND p.status =1
 HAVING 
-    total <> 100 AND p.status =1 OR total =0";
+    total <> 100 AND p.status =1 ";
 
 $result = $con->query($sql);
 
@@ -203,8 +211,8 @@ foreach($result as $val){
 }
 }
 
-// echo $table = fillter();
 
+// เอาวันที่สิ้นสุดโปรเจค
 function taskDeadLine($id){
     include('dbconnect.php');
     $sql="SELECT dead_line
@@ -219,9 +227,10 @@ function taskDeadLine($id){
 
 }
 
+// หน้าReport Start
 function countOwner(){
     include('dbconnect.php');
-    $sql ="SELECT emp.emp_fname,emp.emp_lname,COUNT(p.owner) as project_count
+    $sql ="SELECT emp.emp_fname,emp.emp_lname,COUNT(p.owner) as project_count,CONCAT(emp_fname,' ',emp_lname) as FullName
     FROM project_create AS p
     LEFT JOIN employees AS emp ON emp.emp_id = p.owner
     GROUP BY p.owner
@@ -232,3 +241,20 @@ return $result = $con->query($sql);
 
 }
 
+function topFiveMonthUpdate(){
+    include('dbconnect.php');
+    $sql="SELECT ac.activity_id,ac.update_time,p.project_id,p.project_name,COUNT(p.project_id) AS project_count
+    FROM project_create AS p
+    LEFT JOIN task AS t ON t.project_id = p.project_id
+    LEFT JOIN activity AS a ON a.task_id = t.task_id
+    LEFT JOIN history_acitivity AS ac on ac.activity_id = a.activity_id
+    WHERE MONTH(ac.update_time) = MONTH(now())
+           and YEAR(ac.update_time) = YEAR(now())
+     GROUP BY p.project_id
+     ORDER BY project_count DESC
+     LIMIT 5";
+
+return $result = $con->query($sql);
+}
+
+// หน้าReport End

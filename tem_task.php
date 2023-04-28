@@ -69,7 +69,7 @@ $_ARRAUTH["ADD"]=1;
 		<title><?php echo $_APPLICATION_NAME;?></title>
         <link rel="stylesheet" href=/bootstrap-5.2.3/dist/css/bootstrap.min.css">
     <script src="bootstrap-5.2.3/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css">
+    <!-- <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css"> -->
     <link rel="stylesheet" href="style.css">
 
 
@@ -93,7 +93,10 @@ $_ARRAUTH["ADD"]=1;
 
     <link rel="stylesheet" href="datatable/responsive.dataTables.min.css">
     <script src="datatable/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script> -->
+       <!-- icon -->
+       <link rel="stylesheet" href="Linearicons-Free-v1.0.0/Web Font/style.css">
+    <!--End icon -->
 
     <script>
         $(document).ready(function() {
@@ -170,7 +173,7 @@ $_ARRAUTH["ADD"]=1;
                                      <div class="input-group mt-3 mb-2">
                                          <div class="input-group-prepend">
                                              <span class="input-group-text">
-                                                 Task
+                                                 งาน
                                              </span>
                                          </div>
                                          <input type="text" name="addTask" class="form-control" placeholder="ป้อนชื่องาน" autocomplete="off">
@@ -183,7 +186,7 @@ $_ARRAUTH["ADD"]=1;
                                               } 
                                          echo '</select>
                                      </div>
-                                     <input type="date" name="datetask" id="" class="form-control" min="<?php echo date("Y-m-d"); ">
+                                     <input type="date" name="datetask" id="" class="form-control" min="'.date('Y-m-d').'">
                                      <div class="m-3 d-flex justify-content-end">
                                          <button class="btn btn-success btn-lg">เพิ่มงาน</button>
                                      </div>
@@ -224,10 +227,10 @@ $_ARRAUTH["ADD"]=1;
                                          if (isset($task['task_id'])) {
              
                                              echo "<td><a href='' class='btn btn-info open_activity 'data-bs-target='#add_act' data-bs-toggle='modal' idx=' " . $task['task_id'] . "'>
-                                                 <i class='bi bi-plus-circle-fill'></i>
+                                             <span class='lnr lnr-plus-circle'></span>
                                                      เพิ่มกิจกรรมย่อย
                                                      </a></td>";
-                                             echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick='return confirm(\"ต้องการลบข้อมูลหรือไม่??\")'><i class='bi bi-trash'></i>ลบงาน</a></td>";
+                                             echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick='return confirm(\"ต้องการลบข้อมูลหรือไม่??\")'><span class='lnr lnr-trash'></span></i>ลบงาน</a></td>";
                                              echo "</tr>";
                                          } else {
                                              echo '<td></td>';
@@ -342,10 +345,10 @@ $_ARRAUTH["ADD"]=1;
                                          if (isset($task['task_id'])) {
              
                                              echo "<td><a href='' class='btn btn-info open_activity 'data-bs-target='#add_act' data-bs-toggle='modal' idx=' " . $task['task_id'] . "'>
-                                                 <i class='bi bi-plus-circle-fill'></i>
+                                             <span class='lnr lnr-plus-circle'></span>
                                                      เพิ่มกิจกรรมย่อย
                                                      </a></td>";
-                                             echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick='return confirm(\"ต้องการลบข้อมูลหรือไม่??\")'><i class='bi bi-trash'></i>ลบงาน</a></td>";
+                                             echo "<td><a href='deletetask.php?idtask=" . $task['task_id'] . "'  class='btn btn-danger ' onclick='return confirm(\"ต้องการลบข้อมูลหรือไม่??\")'><span class='lnr lnr-trash'></span></i>ลบงาน</a></td>";
                                              echo "</tr>";
                                          } else {
                                              echo '<td></td>';

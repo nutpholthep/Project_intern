@@ -28,7 +28,7 @@
                             <a href="tem_display.php" class="nav-link">Display</a>
                         </li>
                         <li class="nav-item">
-                            <a href="report.php" class="nav-link">Report</a>
+                            <a href="tem_report.php" class="nav-link">Report</a>
                         </li>
 
                     </ul>

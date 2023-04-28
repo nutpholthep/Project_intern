@@ -24,11 +24,12 @@ $total_progress = 0;
 
 $order = 1;
 
-$sql2 = "SELECT DISTINCT project_create.project_name, task.task_name, task.task_id, activity.activity_name, activity.activity_progress, project_create.detail, activity.activity_id,project_create.project_id, task.dead_line
+//QueryของTaskและActivity
+$sql2 = "SELECT DISTINCT project_create.project_name, task.task_name, task.task_id, activity.activity_name, activity.activity_progress, project_create.detail, activity.activity_id,project_create.project_id, task.dead_line,task.status,activity.status
 FROM task
 RIGHT JOIN project_create ON project_create.project_id = task.project_id
 RIGHT JOIN activity ON task.task_id = activity.task_id 
-WHERE project_create.project_id = $id
+WHERE project_create.project_id = $id AND task.status =1 AND activity.status =1
 ORDER BY task.task_id";
 
 $result_task = mysqli_query($con, $sql2);
@@ -233,7 +234,7 @@ $_ARRAUTH["ADD"]=1;
         $create_by = create_by($id);
         $update_by = update_by($id);
         $taskDeadLine = taskDeadLine($id);
-        echo date("d/m/Y ", strtotime($update_by["update_time"]));
+        // echo date("d/m/Y ", strtotime($update_by["update_time"]));
 		//-----------------------------------------------------------------	
 			// ADD -------------------- Admin
 			if($_ARRAUTH["ADD"]==1){
@@ -659,7 +660,7 @@ $_ARRAUTH["ADD"]=1;
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">อัพเดทความคืบหน้าของกิจกรรมย่อย</h5>
+                                    <h5 class="modal-title">แก้ไขรายละเอียดกิจกรรมย่อย</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

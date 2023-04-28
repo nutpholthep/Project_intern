@@ -56,8 +56,8 @@ $EMP_CODE=$_SESSION["user"];//"4501177";
 // fix for test
 //---------------------------------------------------------------------
 // $_ARRAUTH["VIEW"]=1;
-// $_ARRAUTH["ADD"]=1;
-$_ARRAUTH["EDIT"]=1;
+$_ARRAUTH["ADD"]=1;
+// $_ARRAUTH["EDIT"]=1;
 //---------------------------------------------------------------------
 
 #==========================================================================
@@ -68,7 +68,7 @@ $_ARRAUTH["EDIT"]=1;
       <!-- bootstrap -->
       <link rel="stylesheet" href="/bootstrap-5.2.3/dist/css/bootstrap.min.css">
     <script src="bootstrap-5.2.3/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css">
+    <!-- <link rel="stylesheet" href="icons-1.10.3/font/bootstrap-icons.css"> -->
     <link rel="stylesheet" href="style.css">
     <!-- End bootstrap -->
 
@@ -90,6 +90,9 @@ $_ARRAUTH["EDIT"]=1;
     <link rel="stylesheet" href="select2-develop/dist/css/select2-bootstrap-5-theme.min.css">
     <!-- End select 2 -->
 
+    <!-- icon -->
+    <link rel="stylesheet" href="Linearicons-Free-v1.0.0/Web Font/style.css">
+    <!--End icon -->
 
     <script>
         // สร้างDataTable
@@ -180,7 +183,7 @@ $_ARRAUTH["EDIT"]=1;
                                         echo ' <tr>
                                         <td class="text-end"> '.$order++.' </td>
                                         <td class=""> '.$task["project_name"].' </td>
-                                        <td class="text-center"> <a href="tem_mainpage?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
             
                                         </td>
                                         <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>
@@ -203,7 +206,7 @@ $_ARRAUTH["EDIT"]=1;
                                         echo ' <tr>
                                         <td class="text-end"> '.$order++.' </td>
                                         <td class=""> '.$task["project_name"].' </td>
-                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
             
                                         </td>
                                         <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>
@@ -219,14 +222,14 @@ $_ARRAUTH["EDIT"]=1;
                                 }
                              
                             if (isset($_GET['status']) && $_GET['status'] == '2') {
-                                    
+                                   
                                 $incomplete =  fillterInComplete($id);
                                 $progess_bar = Total_progress($id);
                                 if ($incomplete) {
                                     echo ' <tr>
                                     <td class="text-end"> '.$order++.' </td>
                                     <td class=""> '.$task["project_name"].' </td>
-                                    <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                    <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
         
                                     </td>
                                     <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>
@@ -301,7 +304,7 @@ $_ARRAUTH["EDIT"]=1;
                                         echo ' <tr>
                                         <td class="text-end"> '.$order++.' </td>
                                         <td class=""> '.$task["project_name"].' </td>
-                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
             
                                         </td>
                                         <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>
@@ -324,7 +327,7 @@ $_ARRAUTH["EDIT"]=1;
                                         echo ' <tr>
                                         <td class="text-end"> '.$order++.' </td>
                                         <td class=""> '.$task["project_name"].' </td>
-                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                        <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
             
                                         </td>
                                         <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>
@@ -354,7 +357,7 @@ $_ARRAUTH["EDIT"]=1;
                                     echo ' <tr>
                                     <td class="text-end"> '.$order++.' </td>
                                     <td class=""> '.$task["project_name"].' </td>
-                                    <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><i class="bi bi-info-circle-fill"></i> ดูรายละเอียด</a>
+                                    <td class="text-center"> <a href="tem_mainpage.php?idp='.$task["project_id"].' " class="btn btn-info"><span class="lnr lnr-question-circle"></span> ดูรายละเอียด</a>
         
                                     </td>
                                     <td> '.$task["emp_fname"].'  '.$task["emp_lname"].' </td>

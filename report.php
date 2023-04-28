@@ -38,17 +38,14 @@ require('func.php');
     // $query = mysqli_query($con, $sql);
     $sql = "SELECT project_id FROM project_create";
     $result = mysqli_query($con, $sql);
-
-
     while ($task = mysqli_fetch_assoc($result)) {
         $id = $task['project_id'];
-
         $query = barChart($id);
         $inbar = inBar($id);
 
         foreach ($inbar as $val) {
             $labels[] = $val['project_name'];
-            $num=intval($val['total']);
+            $num = intval($val['total']);
             $datas[] = $num;
             // print_r(intval($val['total']).'<br>');
         }
@@ -57,25 +54,28 @@ require('func.php');
             $data[] = $value['total'];
         }
     }
-$owner = countOwner();
-foreach($owner as $owner_list){
-    $ownername[] = $owner_list['emp_fname'];
-    $ownerlname[] = $owner_list['emp_lname'];
- $nameOwner = array_merge($ownername,$ownerlname);
-    $ownerData[] = $owner_list['project_count'];
+    
+    $owner = countOwner();
+    foreach ($owner as $owner_list) {
+        $ownername[] = $owner_list['FullName'];
+        $ownerData[] = $owner_list['project_count'];
+    }
+    $top = topFiveMonthUpdate();
+    foreach ($top as $topf) {
+        $toplabels[] = $topf['project_name'];
+       $topname[] = $topf['project_count'];
+    }
 
-}
     ?>
     <div class="container">
-
         <div class="card mt-3">
             <h5 class="card-header ">
                 <div class="text-center">
                     <p>ภาพรวมโปรเจค</p>
                     <button id="bar" class="btn btn-primary">คนที่เป็นเจ้าของโปรเจมากที่สุด</button>
                     <button id="pie" class="btn ">โปรเจคที่ยังไม่เสร็จเสร็จแล้ว</button>
+                    <button id="top_month" class="btn ">โปรเจคที่คืบหน้ามากที่สุดในเดือนนี้</button>
                     <button id="act" class="btn ">โปรเจคที่อัพเดทบ่อยที่สุด</button>
-                    <button id="u_update" class="btn ">โปรเจคที่คืบหน้ามากที่สุดในเดือนนี้</button>
                 </div>
             </h5>
             <div class="card-body">
@@ -94,7 +94,7 @@ foreach($owner as $owner_list){
                 label: 'จำนวนโปรเจค',
                 data: <?php echo json_encode($ownerData) ?>,
                 borderWidth: 2,
-                // borderColor: "black",
+                borderColor: null,
                 backgroundColor: [
                     'rgba(255, 99, 132)', //สีแดงโทนอ่อน
                     'rgba(255, 159, 64)', //สีส้มโทนอ่อน
@@ -105,7 +105,9 @@ foreach($owner as $owner_list){
                     'rgba(201, 203, 207)' //สีเทาโทนอ่อน
                 ],
                 hoverOffset: 4,
-                hoverBorderColor: "black"
+                hoverBorderColor: "black",
+                pointRadius: 8,
+                fill: true,
             }]
         };
 
@@ -139,10 +141,12 @@ foreach($owner as $owner_list){
 
             const bar = document.getElementById('bar');
             const pie = document.getElementById('pie');
+            const top = document.getElementById('top_month');
 
             bar.addEventListener('click', changeBar);
             pie.addEventListener('click', changePie);
-
+            top.addEventListener('click',topmonth);
+            
             let mychart = new Chart(
                 document.getElementById('myChart'),
                 config
@@ -153,10 +157,11 @@ foreach($owner as $owner_list){
                 let updateChart = "bar";
                 mychart.config.type = updateChart;
                 mychart.data.labels = <?php echo json_encode($ownername) ?>;
-                mychart.data.datasets[0].label ='จำนวนโปรเจค' 
+                mychart.data.datasets[0].label = 'จำนวนโปรเจค'
                 mychart.data.datasets[0].data = <?php echo json_encode($ownerData) ?>;
                 bar.classList.add('btn-primary')
                 pie.classList.remove('btn-primary')
+                top.classList.remove('btn-primary');
                 mychart.update()
                 // < ?php inBar(55) ?>
                 // data.datasets.label('test')
@@ -167,13 +172,28 @@ foreach($owner as $owner_list){
                 let updateChart = "bar";
                 mychart.config.type = updateChart;
                 mychart.data.labels = <?php echo json_encode($labels) ?>;
-                mychart.data.datasets[0].label ='ความคืบหน้า' 
+                mychart.data.datasets[0].label = 'ความคืบหน้า'
                 mychart.data.datasets[0].data = <?php echo json_encode($datas); ?>;
                 pie.classList.add('btn-primary')
                 bar.classList.remove('btn-primary')
+                top.classList.remove('btn-primary');
+                mychart.update();
+            }
+            function topmonth() {
+                let updateChart = "line";
+                mychart.config.type = updateChart;
+                console.log(mychart.config.type);
+                mychart.data.labels = <?php echo json_encode($toplabels); ?>;
+                mychart.data.datasets[0].label = 'จำนวนที่อัพเดท'
+                // mychart.data.datasets[0].borderColor= "rgb(75, 192, 192)"
+                mychart.data.datasets[0].data = <?php echo json_encode($topname); ?>;
+                pie.classList.remove('btn-primary')
+                bar.classList.remove('btn-primary')
+                top.classList.add('btn-primary');
                 mychart.update();
             }
         })
+       
     </script>
 
 </body>
