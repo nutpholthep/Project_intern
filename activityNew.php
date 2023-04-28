@@ -1,4 +1,6 @@
 <?php
+//Modalสำหรับเพิ่มActivity
+
 require('dbconnect.php');
 $act = "SELECT task.task_id,activity.activity_id,activity.activity_name
 FROM task

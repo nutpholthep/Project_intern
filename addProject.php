@@ -1,5 +1,6 @@
 <?php
 require('dbconnect.php');
+// เพิ่มโปรเจค
 $pname = $_POST['project_Name']; //ชื่อโปรเจค
 // $fname =$_POST['project_Owner_fname']; //ชื่อเจ้าของโปรเจค
 // $lname= $_POST['project_Owner_lname']; //นามสกุลเจ้าของโปรเจค

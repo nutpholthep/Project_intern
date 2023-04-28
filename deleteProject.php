@@ -1,5 +1,6 @@
 
 <?php
+// ลบโปรเจค
 require_once('dbconnect.php');
 $id = $_GET['iddel'];//รับไอดีจากหน้าDisplay
 

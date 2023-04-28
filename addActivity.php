@@ -1,4 +1,5 @@
 <?php
+// เพิ่มActivity
 require('dbconnect.php');
 $idact = $_POST['act_name']; //รับข้อมูลจากหน้าTaskเพื่อเป็นModalเพิ่มActivity
 $task_id = $_POST['task_act'];
